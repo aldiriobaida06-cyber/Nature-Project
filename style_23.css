@@ -1,0 +1,202 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma,Geneva,Verdana,sans-serif;
+    background-color: #0f172a;
+    color: #f8fafc;
+    line-height: 1.6;
+}
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background-color: rgb(15, 23, 42, 0.95);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px  solid#1e293b;
+}
+.logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #10b981;
+}
+.nav-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.nav-links a :hover, .nav-links a.active {
+    color: #10b981;
+}
+.hero-section {
+    position: relative;
+    padding: 140px 20px;
+    text-align: center;
+    background: linear-gradient(rgb(15, 23, 42, 0.7), #0f172a),
+                url('https://unsplash.com')
+                no-repeat center/cover;
+}
+.hero-content {
+    animation: fadeInUp 1.2s ease-out;
+}
+.hero-title {
+    font-size: 3.2rem;
+    margin-bottom: 15px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+.hero-desc {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto 35px auto;
+    color: #cbd5e1;
+}
+.search-box {
+    display: flex;
+    max-width: 600px;
+    background: #1e293b;
+    padding: 6px;
+    border-radius: 50px;
+    border: 2px solid #334155;
+}
+.search-box input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 1rem;
+}
+.search-btn {
+    background-color: #10b981;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.search-btn:hover {
+    background-color: #059669;
+}
+.gallery-section {
+    padding: 70px 8%;
+}
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #f8fafc;
+    border-left: 5px solid #10b981;
+    padding-left: 15px;
+}
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+}
+.card {
+    background-color: #1e293b;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgb(0,0,0,0.2);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.card:hover {
+    transform: scale(1.03);
+}
+.card-image {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
+}
+.bg-forest {background: url("../forest.png") no-repeat center/cover;}
+.bg-mountain {background: url("../mountain.png") no-repeat center/cover;}
+.bg-valley {background: url("../valley.png") no-repeat center/cover;}
+.card-info {
+    padding: 25px;
+}
+.card-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #f1f5f9;
+}
+.card-info p {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+.download-btn {
+    width: 100%;
+    background-color: #334155;
+    color: #f8fafc;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.download-btn:hover {
+    background-color: #10b981;
+    box-shadow: 0 4px 12px rgb(16, 185, 129, 0.3);
+}
+.main-footer {
+    display: block;
+    text-align: center;
+    padding: 30px;
+    background-color: #090d16;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-top: 50px;
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+@media (max-width: 1024px) {
+    .grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+@media (max-width: 650px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+    .main-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    .search-box {
+        flex-direction: column;
+        border-radius: 15px;
+        background: transparent;
+        border: none;
+        gap: 10px;
+    }
+    .search-box input {
+        background: #1e293b;
+        border-radius: 30px;
+    }
+
+}
