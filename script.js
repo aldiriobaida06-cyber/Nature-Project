@@ -74,4 +74,19 @@ searchInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         searchBtn.click();
     }
+
+
+
+async function fetchServerMessage ()  {
+        try {
+            const response = await fetch('http://127.0.0.1');
+            const data = await response.json();
+            console.log("The Servant's Message:", data.message);
+            alert(data.message);
+        } catch (error)  {
+            console.error("Failed to connect to the server:", error);
+        }
+}
+
+fetchServerMessage();
 });
