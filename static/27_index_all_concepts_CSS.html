@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Wings - HD Wallpapers</title>
+    <link rel="stylesheet" href="/static/style_23.css">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+   <header class="main-header">
+       <div class="logo">Green Wings-Wallpaper</div>
+
+       <nav class="nav-links">
+           <a href="#" class="active">Home</a>
+           <a href="#" class="Forests"></a>
+           <a href="#" class="Mountains"></a>
+           <a href="#" class="Oceans"></a>
+       </nav>
+
+       <div class="header-actions">
+           <div class="search-box">
+               <input type="text" id="search-input" placeholder="Search wallpapers...">
+               <button id="search-btn">Search</button>
+           </div>
+
+           <details class="upload-trigger-wrapper">
+               <summary class="upload-nav-btn">
+                   <span class="upload-nav-icon">📤</span> Upload
+               </summary>
+
+               <!-- Admin Popover: wallpaper upload + admin-only "Received Messages" panel -->
+               <div class="upload-popover">
+                   <form id="uploadForm" class="upload-form">
+                       <label for="uploadFile" class="upload-file-label">
+                           <span class="upload-file-icon">🏔️</span>
+                           <span class="upload-file-text" id="uploadFileText">Choose Wallpaper (e.g. Alps Mountain.jpg)</span>
+                       </label>
+                       <input type="file" id="uploadFile" accept="image/*" required hidden>
+
+                       <input type="text" id="uploadTitle" placeholder="Wallpaper Title" required>
+                       <textarea id="uploadDescription" placeholder="Short Description" rows="2"></textarea>
+
+                       <button type="submit" id="uploadSubmitBtn">Upload &amp; Publish</button>
+                   </form>
+
+                   <div class="admin-messages-section">
+                       <h3 class="admin-messages-title">Received Articles or Messages</h3>
+
+                       <button type="button" id="loadBtn" class="load-btn">
+                           Load Messages
+                       </button>
+
+                       <div id="messagesContainer" class="messages-container">
+                       </div>
+                   </div>
+               </div>
+           </details>
+       </div>
+   </header>
+
+   <section class="hero-section">
+       <div class="hero-content">
+           <h1 class="hero-title">Bring Nature's Beauty to your Screen</h1>
+           <p class="hero-desc">Discover and download thousands of free high-definition wallpapers of majestic mountains and mysterious forests.</p>
+       </div>
+   </section>
+
+   <main class="gallery-section">
+       <h2 class="section-title">Latest  Nature Wallpapers</h2>
+
+       <div class="grid-layout">
+           <div class="card">
+               <div class="card-image bg-forest"></div>
+               <div class="card-info">
+                   <h3>Sunlight Through Trees</h3>
+                   <p>stunning photography of dense Amazon rainforests.</p>
+                   <button class="download-btn" data-download-url="/static/forest.png">Download Full Size</button>
+               </div>
+           </div>
+
+           <div class="card">
+               <div class="card-image bg-mountain"></div>
+               <div class="card-info">
+                   <h3>Alps Mountain Peaks</h3>
+                   <p>Breathtaking snow-capped  mountain backdrop at sunset.</p>
+                   <button class="download-btn" data-download-url="/static/mountain.png">Download  Full Size</button>
+               </div>
+           </div>
+
+           <div class="card">
+               <div class="card-image bg-valley"></div>
+               <div class="card-info">
+                   <h3>Magical Green Valley</h3>
+                   <p>A crystal clear  lake reflecting pure New Zealand nature.</p>
+                   <button class="download-btn"  data-download-url="/static/valley.png">Download Full Size</button>
+               </div>
+           </div>
+       </div>
+   </main>
+
+   <div class="contact-box" style="padding: 20px; text-align: center;">
+        <h3>Contact Us</h3>
+       <input type="text"  id="usernameInput" placeholder="Write your name here" style="padding: 10px; margin: 5px;">
+       <input type="text" id="messageInput" placeholder="Write your message here" style="padding: 10px; margin: 5px;">
+       <button id="sendBtn" style="padding: 10px 20px;  background-color: #28a745; color: white; border: none; cursor: pointer">Send Now!</button>
+   </div>
+
+   <footer class="main-footer">
+       <p class="footer-text">Made with love for nature lovers 2026 | Green Wings Wallpapers</p>
+   </footer>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

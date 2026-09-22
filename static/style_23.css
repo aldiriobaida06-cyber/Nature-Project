@@ -1,0 +1,485 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0f172a;
+    color: #f8fafc;
+    line-height: 1.6;
+}
+
+/* ===== HEADER ===== */
+.main-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 5%;
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(6px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #1e293b;
+}
+.logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #10b981;
+}
+.nav-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.nav-links a:hover, .nav-links a.active {
+    color: #10b981;
+}
+
+/* ===== HEADER ACTIONS (Search + Upload) ===== */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    max-width: 320px;
+    background: #1e293b;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+}
+.search-box input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 8px 14px;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    opacity: 1;
+}
+#search-btn {
+    background-color: #10b981;
+    color: #fff;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: background 0.25s ease;
+}
+#search-btn:hover {
+    background-color: #059669;
+}
+
+/* ===== UPLOAD TRIGGER + ADMIN POPOVER (pure CSS disclosure via <details>) ===== */
+.upload-trigger-wrapper {
+    position: relative;
+}
+.upload-trigger-wrapper summary {
+    list-style: none;
+    cursor: pointer;
+}
+.upload-trigger-wrapper summary::-webkit-details-marker {
+    display: none;
+}
+.upload-trigger-wrapper summary::marker {
+    content: "";
+}
+
+.upload-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #10b981;
+    color: #fff;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: background 0.25s ease, transform 0.2s ease;
+}
+.upload-nav-btn:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+}
+.upload-nav-icon {
+    font-size: 1rem;
+}
+
+/* Outer popover shell: holds both the upload form and the admin messages panel */
+.upload-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    z-index: 300;
+    animation: fadeInUp 0.25s ease-out;
+}
+
+/* Inner wallpaper-upload form: same stacked layout it always had */
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.upload-file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 22px 12px;
+    border: 2px dashed #475569;
+    border-radius: 8px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+}
+.upload-file-label:hover {
+    border-color: #10b981;
+    color: #10b981;
+    background-color: rgba(16, 185, 129, 0.06);
+}
+.upload-file-icon {
+    font-size: 1.5rem;
+}
+
+.upload-form input[type="text"],
+.upload-form textarea {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #f8fafc;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.upload-form input[type="text"]:focus,
+.upload-form textarea:focus {
+    border-color: #10b981;
+}
+.upload-form textarea {
+    resize: vertical;
+}
+
+#uploadSubmitBtn {
+    background-color: #10b981;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+#uploadSubmitBtn:hover {
+    background-color: #059669;
+}
+
+/* Admin-only messages panel, now living inside the popover, below the upload form */
+.admin-messages-section {
+    border-top: 1px solid #334155;
+    padding-top: 16px;
+    text-align: center;
+}
+.admin-messages-title {
+    color: #f8fafc;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+.messages-container {
+    color: #f8fafc;
+    text-align: left;
+    font-size: 0.85rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* ===== HERO ===== */
+.hero-section {
+    position: relative;
+    padding: 140px 20px;
+    text-align: center;
+    background: linear-gradient(rgba(15, 23, 42, 0.7), #0f172a),
+                url('https://unsplash.com')
+                no-repeat center/cover;
+}
+.hero-content {
+    animation: fadeInUp 1.2s ease-out;
+}
+.hero-title {
+    font-size: 3.2rem;
+    margin-bottom: 15px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+.hero-desc {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto;
+    color: #cbd5e1;
+}
+
+/* ===== GALLERY ===== */
+.gallery-section {
+    padding: 70px 8%;
+}
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #f8fafc;
+    border-left: 5px solid #10b981;
+    padding-left: 15px;
+}
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+}
+
+/* Card shell: overflow:hidden clips the zoomed image to these rounded corners.
+   No transform/scale on the card itself -- only the glow animates here,
+   so the card's footprint in the grid never shifts. */
+.card {
+    background-color: #1e293b;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.4s ease;
+}
+.card:hover {
+    /* Subtle green neon glow layered on top of the original drop shadow */
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25),
+                0 0 18px rgba(0, 230, 118, 0.35);
+}
+.card-image {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
+}
+.card:hover .card-image {
+    /* Smooth image-only zoom; clipped by .card's overflow: hidden */
+    transform: scale(1.05);
+}
+.bg-forest { background: url("forest.png") no-repeat center/cover; }
+.bg-mountain { background: url("mountain.png") no-repeat center/cover; }
+.bg-valley { background: url("valley.png") no-repeat center/cover; }
+.card-info {
+    padding: 25px;
+}
+.card-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #f1f5f9;
+}
+.card-info p {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+.download-btn {
+    width: 100%;
+    background-color: #334155;
+    color: #f8fafc;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.download-btn:hover {
+    background-color: #10b981;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* ===== CONTACT FORM INPUTS ===== */
+#messageForm input,
+#messageForm textarea,
+.contact-box input {
+    background-color: #1e1e1e !important;
+    border: 1px solid #333333 !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    padding: 10px 15px !important;
+    outline: none !important;
+}
+#messageForm input::placeholder,
+#messageForm textarea::placeholder {
+    color: #aaaaaa !important;
+}
+#messageForm input:focus,
+#messageForm textarea:focus {
+    border-color: #2ec4b6 !important;
+}
+
+.message-section {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #121212;
+}
+.message-section .message-title {
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+/* ===== LOAD MESSAGES BUTTON (neon green theme) =====
+   Single source of truth: no other rule in this file sets a
+   background on this button, so there is nothing left to fight it. */
+#loadBtn,
+#loadMessagesBtn,
+.load-btn,
+button[onclick*="load"] {
+    background-color: #00e676 !important;
+    color: #000000 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: bold !important;
+    padding: 10px 24px !important;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.2) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+#loadBtn:hover,
+#loadMessagesBtn:hover,
+.load-btn:hover {
+    background-color: #00b555 !important;
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.4) !important;
+}
+
+/* ===== FOOTER (single definition, transparent by design) ===== */
+.main-footer {
+    display: block;
+    text-align: center;
+    padding: 30px;
+    background-color: transparent;
+    margin-top: 50px;
+}
+.footer-text {
+    color: #a0a0a0;
+    font-size: 14px;
+    margin: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    .grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .search-box {
+        flex: 1;
+        max-width: none;
+    }
+}
+
+@media (max-width: 650px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+    .main-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .nav-links {
+        display: flex;
+        justify-content: center;
+    }
+    .header-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-box {
+        border-radius: 8px;
+    }
+    .upload-nav-btn {
+        justify-content: center;
+    }
+    .upload-popover {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .hero-title {
+        font-size: 2.2rem;
+    }
+}
+
+/* ===== TOAST ===== */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background-color: #1f2937;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    font-size: 15px;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 9999;
+    max-width: 90%;
+    text-align: center;
+}
+.toast-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.toast-notification.toast-error {
+    background-color: #b91c1c;
+}
