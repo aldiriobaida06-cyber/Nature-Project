@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Green Wings – Admin</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; background: #0a0a0a; color: #ededed; padding: 20px; max-width: 900px; margin: 0 auto; }
+        h1 { color: #10b981; margin-bottom: 16px; }
+        h2 { margin: 28px 0 12px; font-size: 1.1rem; color: #f8fafc; }
+        .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+        input[type="password"] { flex: 1 1 240px; padding: 10px 12px; background: #121212; border: 1px solid #333; border-radius: 8px; color: #fff; font: inherit; }
+        button { padding: 9px 16px; border: none; border-radius: 8px; background: #10b981; color: #0a0a0a; font: inherit; font-weight: 700; cursor: pointer; }
+        button.danger { background: #b91c1c; color: #fff; }
+        button.ghost { background: #1f2937; color: #f8fafc; }
+        .item { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; background: #121212; border: 1px solid #262626; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+        .item img { width: 140px; height: 90px; object-fit: cover; border-radius: 6px; background: #1e1e1e; }
+        .item .meta { flex: 1 1 200px; min-width: 0; overflow-wrap: anywhere; }
+        .item .meta small { color: #94a3b8; display: block; margin-top: 4px; }
+        .badge { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 8px; }
+        .badge.pending { background: #f59e0b; color: #000; }
+        .badge.live { background: #10b981; color: #000; }
+        #status { margin: 10px 0; min-height: 1.4em; color: #94a3b8; }
+        #status.error { color: #f87171; }
+    </style>
+</head>
+<body>
+    <h1>Green Wings – Admin</h1>
+
+    <div class="row">
+        <input type="password" id="token" placeholder="Admin token" autocomplete="off">
+        <button type="button" id="loadAll">Load</button>
+    </div>
+    <p id="status" role="status"></p>
+
+    <h2>Uploads (pending first)</h2>
+    <div id="uploads"></div>
+
+    <h2>Messages</h2>
+    <div id="messages"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const tokenInput = $('#token');
+const statusEl = $('#status');
+
+try { tokenInput.value = sessionStorage.getItem('gwAdminToken') || ''; } catch { /* ignore */ }
+
+function setStatus(text, isError = false) {
+    statusEl.textContent = text;
+    statusEl.className = isError ? 'error' : '';
+}
+
+async function api(path, options = {}) {
+    const res = await fetch(path, {
+        ...options,
+        headers: { 'X-Admin-Token': tokenInput.value.trim() }
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(typeof err.detail === 'string' ? err.detail : `Error ${res.status}`);
+    }
+    return res.json();
+}
+
+function button(label, cls, handler) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = label;
+    if (cls) b.className = cls;
+    b.addEventListener('click', handler);
+    return b;
+}
+
+async function act(fn) {
+    try { await fn(); await loadAll(); }
+    catch (e) { setStatus(e.message, true); }
+}
+
+function renderUploads(list) {
+    const box = $('#uploads');
+    box.innerHTML = '';
+    if (!list.length) { box.textContent = 'No uploads.'; return; }
+
+    list.forEach(w => {
+        const item = document.createElement('div');
+        item.className = 'item';
+
+        const img = document.createElement('img');
+        img.src = w.thumb_url || w.image_url;
+        img.alt = '';
+        img.loading = 'lazy';
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const title = document.createElement('strong');
+        title.textContent = w.title;
+        const badge = document.createElement('span');
+        badge.className = 'badge ' + (w.approved ? 'live' : 'pending');
+        badge.textContent = w.approved ? 'LIVE' : 'PENDING';
+        const desc = document.createElement('small');
+        desc.textContent = w.description || '(no description)';
+        const full = document.createElement('a');
+        full.href = w.image_url;
+        full.target = '_blank';
+        full.rel = 'noopener';
+        full.textContent = 'Open original';
+        full.style.cssText = 'color:#94a3b8;font-size:.8rem;';
+        meta.append(title, badge, desc, full);
+
+        item.append(img, meta);
+        if (!w.approved) item.append(button('Approve', '', () => act(() => api(`/api/admin/wallpapers/${w.id}/approve`, { method: 'POST' }))));
+        item.append(button('Delete', 'danger', () => {
+            if (confirm('Delete this wallpaper permanently?')) act(() => api(`/api/admin/wallpapers/${w.id}`, { method: 'DELETE' }));
+        }));
+        box.appendChild(item);
+    });
+}
+
+function renderMessages(list) {
+    const box = $('#messages');
+    box.innerHTML = '';
+    if (!list.length) { box.textContent = 'No messages.'; return; }
+
+    list.forEach(m => {
+        const item = document.createElement('div');
+        item.className = 'item';
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const name = document.createElement('strong');
+        name.textContent = m.username;
+        const text = document.createElement('small');
+        text.style.cssText = 'color:#ededed;white-space:pre-wrap;';
+        text.textContent = m.text;
+        meta.append(name, text);
+        item.append(meta, button('Delete', 'danger', () => {
+            if (confirm('Delete this message?')) act(() => api(`/api/messages/${m.id}`, { method: 'DELETE' }));
+        }));
+        box.appendChild(item);
+    });
+}
+
+async function loadAll() {
+    setStatus('Loading...');
+    try { sessionStorage.setItem('gwAdminToken', tokenInput.value.trim()); } catch { /* ignore */ }
+    try {
+        const [uploads, messages] = await Promise.all([api('/api/admin/wallpapers'), api('/api/get-messages')]);
+        renderUploads(uploads);
+        renderMessages(messages);
+        setStatus(`${uploads.filter(u => !u.approved).length} pending upload(s), ${messages.length} message(s).`);
+    } catch (e) {
+        setStatus(e.message, true);
+    }
+}
+
+$('#loadAll').addEventListener('click', loadAll);
+tokenInput.addEventListener('keydown', e => { if (e.key === 'Enter') loadAll(); });
+if (tokenInput.value) loadAll();
+</script>
+</body>
+</html>
