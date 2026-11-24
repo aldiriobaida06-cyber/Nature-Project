@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a0a">
-    <meta name="description" content="Free high-definition nature wallpapers: mountains, forests and oceans.">
+    <meta name="description" content="Free high-definition nature wallpapers: mountains, forests and oceans." data-i18n-attr="content:meta_desc">
     <title>Green Wings - HD Wallpapers</title>
+
+    <!-- Applies the saved Dark/Light theme BEFORE the first paint (no flash). Tiny external file, so it also
+         works with a strict CSP. Must stay above the stylesheet. -->
+    <script src="/theme-init.js?v3"></script>
+    <link rel="manifest" href="/manifest.webmanifest">
 
     <!-- Self-hosted font (no connection to Google). The file must exist in static/fonts/ -->
     <link rel="preload" href="/static/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 
-    <link rel="stylesheet" href="/static/style_23.css?v61">
+    <link rel="stylesheet" href="/style_23.css?v87">
     <link rel="icon" href="data:,">
 </head>
 <body>
@@ -20,154 +25,356 @@
 <div id="top-sentinel" aria-hidden="true"></div>
 
 <header class="main-header">
-    <div class="logo">Green Wings</div>
+    <a href="/static" class="logo" id="logo-link">Green Wings</a>
 
-    <nav class="nav-links" aria-label="Main">
-        <a href="/" class="active" data-nav="home" aria-current="page">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span>Home</span>
-        </a>
+    <nav class="nav-links" aria-label="Main" data-i18n-attr="aria-label:nav_aria">
+        <span class="upload-nav-icon" aria-hidden="true">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+       </span>
+        <!-- data-search stays in ENGLISH on purpose: it is the Unsplash search keyword. -->
         <a href="?q=forests" data-nav="forests" data-search="Forests">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"/><path d="M12 22v-3"/></svg>
-            <span>Forests</span>
+            <span data-i18n="nav_forests">Forests</span>
         </a>
         <a href="?q=mountains" data-nav="mountains" data-search="Mountains">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
-            <span>Mountains</span>
+            <span data-i18n="nav_mountains">Mountains</span>
         </a>
         <a href="?q=oceans" data-nav="oceans" data-search="Oceans">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg>
-            <span>Oceans</span>
+            <span data-i18n="nav_oceans">Oceans</span>
         </a>
         <a href="?view=favorites" data-nav="favorites" id="favorites-nav-btn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            <span>Favorites</span>
+            <span data-i18n="nav_favorites">Favorites</span>
+        </a>
+
+        <a href="#gradient-studio" data-gradient-studio-open aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 15 15 3"/><path d="M9 21 21 9"/></svg>
+            <span class="gs-nav-full" data-gs-label="nav">Gradient Studio</span>
+            <span class="gs-nav-short" data-gs-label="navShort">Gradients</span>
         </a>
     </nav>
 
     <div class="header-actions">
-        <div class="search-box" role="search">
-            <input type="search" id="search-input" placeholder="Search wallpapers..." aria-label="Search wallpapers" enterkeyhint="search" autocomplete="off" maxlength="100">
-            <button type="button" id="search-btn">Search</button>
+        <!-- A real <form>: the Search button, the Enter key and the phone keyboard's "search" key all
+             submit it, and script.js handles that one submit event. action/name keep a no-JS submit
+             working through the existing ?q= URL handling. -->
+        <form class="search-box" id="search-form" role="search" action="/static" method="get">
+            <input type="search" id="search-input" name="q" placeholder="Search wallpapers..." aria-label="Search wallpapers" enterkeyhint="search" autocomplete="off" autocapitalize="none" maxlength="100"
+                   data-i18n-attr="placeholder:search_placeholder;aria-label:search_aria">
+            <button type="submit" id="search-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span data-i18n="search_btn">Search</span>
+            </button>
+        </form>
+
+        <!-- Language switcher: script.js handles the clicks (data-lang) -->
+        <div class="lang-switcher" role="group" aria-label="Language" data-i18n-attr="aria-label:lang_aria">
+            <button type="button" class="lang-btn active" data-lang="en" lang="en" aria-pressed="true" aria-label="English" title="English">EN</button>
+            <span class="lang-sep" aria-hidden="true"></span>
+            <button type="button" class="lang-btn" data-lang="ar" lang="ar" aria-pressed="false" aria-label="العربية" title="العربية">AR</button>
         </div>
 
-        <details class="upload-trigger-wrapper">
-            <summary class="upload-nav-btn">
-                <span class="upload-nav-icon" aria-hidden="true">📤</span>
-                <span class="upload-nav-label">Upload</span>
+        <!-- Dark / Light toggle: script.js handles the click and keeps aria-label + title translated.
+             CSS shows the sun in Dark mode and the moon in Light mode. -->
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Switch to light mode" title="Switch to light mode">
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+
+        <details class="upload-trigger-wrapper menu-wrapper">
+    <summary class="menu-btn" aria-label="Menu" title="Menu" data-i18n-attr="aria-label:menu;title:menu">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+    </summary>
+
+    <div class="upload-popover menu-panel">
+        <details class="menu-upload">
+            <summary class="menu-item">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span data-i18n="upload">Upload</span>
+                <svg class="icon menu-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
             </summary>
 
-            <div class="upload-popover">
-                <form id="uploadForm" class="upload-form">
-                    <label for="uploadFile" class="upload-file-label">
-                        <span class="upload-file-icon" aria-hidden="true">🏔️</span>
-                        <span class="upload-file-text" id="uploadFileText">Choose Wallpaper (e.g. Alps Mountain.jpg)</span>
-                    </label>
-                    <input type="file" id="uploadFile" accept="image/jpeg,image/png,image/webp" hidden>
-
-                    <input type="text" id="uploadTitle" placeholder="Wallpaper Title" aria-label="Wallpaper title" maxlength="100" required>
-                    <textarea id="uploadDescription" placeholder="Short Description" aria-label="Short description" rows="2" maxlength="300"></textarea>
-
-                    <button type="submit" id="uploadSubmitBtn">Upload &amp; Submit</button>
-                    <p class="upload-note">Uploads are published after a quick review.</p>
-                </form>
-            </div>
+            <!-- your existing <form id="uploadForm" class="upload-form"> … </form> goes here, unchanged -->
+            <form id="uploadForm" class="upload-form">
+    <label class="upload-file-label" for="uploadFile">
+        <span class="upload-file-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+        <span id="uploadFileText" data-i18n="upload_choose">Choose Wallpaper (e.g. Alps Mountain.jpg)</span>
+    </label>
+    <input type="file" id="uploadFile" name="file" accept="image/jpeg,image/png,image/webp" hidden>
+    <input type="text" id="uploadTitle" name="title" maxlength="100" placeholder="Wallpaper Title" aria-label="Wallpaper title"
+           data-i18n-attr="placeholder:upload_title_ph;aria-label:upload_title_aria">
+    <textarea id="uploadDescription" name="description" rows="3" maxlength="300" placeholder="Short Description" aria-label="Short description"
+              data-i18n-attr="placeholder:upload_desc_ph;aria-label:upload_desc_aria"></textarea>
+    <button type="submit" id="uploadSubmitBtn" data-i18n="upload_submit">Upload &amp; Submit</button>
+    <p class="upload-note" data-i18n="upload_note">Uploads are published after a quick review.</p>
+</form>
         </details>
+        <a class="menu-item" href="#contact" id="menuContact">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span data-i18n="contact_title">Contact Us</span>
+        </a>
+    </div>
+</details>
     </div>
 </header>
 
 <section class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-title">Bring Nature's Beauty to your Screen</h1>
-        <p class="hero-desc">Discover and download thousands of free high-definition wallpapers of majestic mountains and mysterious forests.</p>
+        <h1 class="hero-title" data-i18n="hero_title">Bring Nature's Beauty to your Screen</h1>
+        <p class="hero-desc" data-i18n="hero_desc">Discover and download thousands of free high-definition wallpapers of majestic mountains and mysterious forests.</p>
     </div>
 </section>
 
 <main class="gallery-section">
     <div class="section-head">
+        <!-- Text managed by script.js (changes with the current view: home / results / favorites) -->
         <h2 class="section-title" id="section-title">Latest Nature Wallpapers</h2>
 
         <!-- Shown by script.js on search results only -->
-        <div class="orientation-filter" id="orientation-filter" role="group" aria-label="Orientation" hidden>
-            <button type="button" data-orientation="any" class="active" aria-pressed="true">All</button>
-            <button type="button" data-orientation="landscape" aria-pressed="false">🖥️ Landscape</button>
-            <button type="button" data-orientation="portrait" aria-pressed="false">📱 Portrait</button>
+        <div class="orientation-filter" id="orientation-filter" role="group" aria-label="Orientation" data-i18n-attr="aria-label:orient_aria" hidden>
+            <button type="button" data-orientation="landscape" aria-pressed="false">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    <span data-i18n="orient_landscape">Landscape</span>
+</button>
+<button type="button" data-orientation="portrait" aria-pressed="false">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+    <span data-i18n="orient_portrait">Portrait</span>
+</button>
         </div>
     </div>
 
-    <!-- Quality badges are added by script.js. -->
+        <!-- Wallpaper of the Day. The card has a fixed height in CSS, so the space is reserved before the data
+         arrives (no layout shift). script.js fills #wotd-card; the section stays hidden outside the home view. -->
+    <section class="wotd" id="wotd" aria-label="Wallpaper of the Day" aria-busy="true"
+             data-i18n-attr="aria-label:wotd_title">
+        <div class="wotd-card" id="wotd-card"></div>
+    </section>
+
+    <!-- Filter bar = Quick Filter Pills + Dominant Color swatches. script.js hides the whole bar on the Favorites view. -->
+    <div class="filter-bar" id="filter-bar">
+
+    <!-- Quick Filter Pills. One tap = the same search as the header links (runSearch in script.js), so the
+         existing /api/photos query, orientation filter, infinite scroll and ?q= URL all work unchanged.
+         data-category is the ENGLISH Unsplash keyword (lowercase) and is never translated; the visible label
+         comes from data-i18n. An empty data-category is "All" (= the home view).
+         script.js sets .active + aria-pressed and hides the bar on the Favorites view.
+         To add or remove a category: add or remove one <button>, plus its cat_* label in TRANSLATIONS. -->
+    <div class="category-pills" id="category-pills" role="group" aria-label="Categories" data-i18n-attr="aria-label:cat_aria">
+        <button type="button" class="category-pill active" data-category="" aria-pressed="true" data-i18n="cat_all">All</button>
+        <button type="button" class="category-pill" data-category="forests" aria-pressed="false" data-i18n="cat_forests">Forests</button>
+        <button type="button" class="category-pill" data-category="mountains" aria-pressed="false" data-i18n="cat_mountains">Mountains</button>
+        <button type="button" class="category-pill" data-category="nature" aria-pressed="false" data-i18n="cat_nature">Nature</button>
+        <button type="button" class="category-pill" data-category="sky" aria-pressed="false" data-i18n="cat_sky">Sky</button>
+        <button type="button" class="category-pill" data-category="water" aria-pressed="false" data-i18n="cat_water">Water</button>
+        <button type="button" class="category-pill" data-category="oceans" aria-pressed="false" data-i18n="cat_oceans">Oceans</button>
+        <button type="button" class="category-pill" data-category="minimal" aria-pressed="false" data-i18n="cat_minimal">Minimal</button>
+        <button type="button" class="category-pill" data-category="night" aria-pressed="false" data-i18n="cat_night">Night</button>
+        <button type="button" class="category-pill" data-category="abstract" aria-pressed="false" data-i18n="cat_abstract">Abstract</button>
+    </div>
+
+    <!-- Dominant color filter. data-color is the bucket name script.js matches against ("" = All colors).
+         Fill colors live in style_23.css (attribute selectors), so there are no inline styles.
+         The tooltip + aria-label are translated through data-i18n-attr (color_* keys in TRANSLATIONS). -->
+    <div class="color-filter" id="color-filter" role="group" aria-label="Filter by color" data-i18n-attr="aria-label:color_aria">
+        <button type="button" class="color-swatch" data-color="" aria-pressed="true" aria-label="All colors" title="All colors" data-i18n-attr="aria-label:color_all;title:color_all"><svg class="swatch-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        <button type="button" class="color-swatch" data-color="green" aria-pressed="false" aria-label="Green" title="Green" data-i18n-attr="aria-label:color_green;title:color_green"><svg class="swatch-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        <button type="button" class="color-swatch" data-color="black" aria-pressed="false" aria-label="Black" title="Black" data-i18n-attr="aria-label:color_black;title:color_black"><svg class="swatch-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        <button type="button" class="color-swatch" data-color="white" aria-pressed="false" aria-label="White" title="White" data-i18n-attr="aria-label:color_white;title:color_white"><svg class="swatch-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        <button type="button" class="color-swatch" data-color="blue" aria-pressed="false" aria-label="Blue" title="Blue" data-i18n-attr="aria-label:color_blue;title:color_blue"><svg class="swatch-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        <button type="button" class="color-swatch" data-color="orange" aria-pressed="false" aria-label="Orange" title="Orange" data-i18n-attr="aria-label:color_orange;title:color_orange"><svg class="swatch-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        <button type="button" class="color-swatch" data-color="purple" aria-pressed="false" aria-label="Purple" title="Purple" data-i18n-attr="aria-label:color_purple;title:color_purple"><svg class="swatch-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+        <button type="button" class="color-swatch" data-color="neutral" aria-pressed="false" aria-label="Neutral / Earth" title="Neutral / Earth" data-i18n-attr="aria-label:color_neutral;title:color_neutral"><svg class="swatch-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>
+    </div>
+    </div><!-- /#filter-bar -->
+
+    <!-- Quality badges are added by script.js.
+         The title="" tooltips on the static cards are filled by script.js (data-i18n-attr), so they follow the language. -->
     <div class="grid-layout" aria-live="polite">
         <div class="card">
-            <img src="/static/forest.webp" alt="Sunlight Through Trees" loading="lazy" decoding="async">
-            <button type="button" class="favorite-btn" data-src="/static/forest.webp" aria-label="Add to favorites" aria-pressed="false">🤍</button>
+            <img src="/static/forest.webp" alt="Sunlight Through Trees" loading="lazy" decoding="async" data-i18n-attr="alt:card1_title">
+<button type="button" class="card-open" data-i18n-attr="aria-label:card1_title;title:card1_title"></button>
+<button type="button" class="favorite-btn" ></button>
             <div class="card-info">
-                <h3>Sunlight Through Trees</h3>
-                <p>Stunning photography of dense Amazon rainforests.</p>
+                <h3 data-i18n="card1_title" data-i18n-attr="title:card1_title">Sunlight Through Trees</h3>
+                <p data-i18n="card1_desc" data-i18n-attr="title:card1_desc">Stunning photography of dense Amazon rainforests.</p>
                 <button type="button" class="download-btn" data-download-url="/static/forest.webp">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    <span class="btn-label">Download Full Size</span>
+                    <span class="btn-label" data-i18n="dl_full">Download Full Size</span>
                 </button>
             </div>
         </div>
 
         <div class="card">
-            <img src="/static/mountain.webp" alt="Alps Mountain Peaks" loading="lazy" decoding="async">
-            <button type="button" class="favorite-btn" data-src="/static/mountain.webp" aria-label="Add to favorites" aria-pressed="false">🤍</button>
+            <img src="/static/mountain.webp" alt="Alps Mountain Peaks" loading="lazy" decoding="async" data-i18n-attr="alt:card2_title">
+            <button type="button" class="card-open" data-i18n-attr="aria-label:card1_title;title:card1_title"></button>
+<button type="button" class="favorite-btn"></button>
             <div class="card-info">
-                <h3>Alps Mountain Peaks</h3>
-                <p>Breathtaking snow-capped mountain backdrop at sunset.</p>
+                <h3 data-i18n="card2_title" data-i18n-attr="title:card2_title">Alps Mountain Peaks</h3>
+                <p data-i18n="card2_desc" data-i18n-attr="title:card2_desc">Breathtaking snow-capped mountain backdrop at sunset.</p>
                 <button type="button" class="download-btn" data-download-url="/static/mountain.webp">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    <span class="btn-label">Download Full Size</span>
+                    <span class="btn-label" data-i18n="dl_full">Download Full Size</span>
                 </button>
             </div>
         </div>
 
         <div class="card">
-            <img src="/static/valley.webp" alt="Magical Green Valley" loading="lazy" decoding="async">
-            <button type="button" class="favorite-btn" data-src="/static/valley.webp" aria-label="Add to favorites" aria-pressed="false">🤍</button>
+            <img src="/static/valley.webp" alt="Magical Green Valley" loading="lazy" decoding="async" data-i18n-attr="alt:card3_title">
+            <button type="button" class="card-open" data-i18n-attr="aria-label:card1_title;title:card1_title"></button>
+<button type="button" class="favorite-btn"></button>
             <div class="card-info">
-                <h3>Magical Green Valley</h3>
-                <p>A crystal clear lake reflecting pure New Zealand nature.</p>
+                <h3 data-i18n="card3_title" data-i18n-attr="title:card3_title">Magical Green Valley</h3>
+                <p data-i18n="card3_desc" data-i18n-attr="title:card3_desc">A crystal clear lake reflecting pure New Zealand nature.</p>
                 <button type="button" class="download-btn" data-download-url="/static/valley.webp">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    <span class="btn-label">Download Full Size</span>
+                    <span class="btn-label" data-i18n="dl_full">Download Full Size</span>
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- Shown by script.js when a color is selected and no loaded wallpaper matches it. The CSS also hides it
+         whenever the grid holds no cards (loading / error / "no results" messages). -->
+    <p class="color-empty" id="color-empty" role="status" hidden data-i18n="color_none">No wallpapers match this color yet. Try another color.</p>
+
+    <!-- Invisible marker under the grid: script.js watches it with an IntersectionObserver and loads the
+         next page of results shortly before it scrolls into view (infinite scroll). -->
+    <div id="load-sentinel" aria-hidden="true"></div>
+
+    <!-- Fallback loader: hidden while infinite scroll works; shown as "Load more" / "retry" when it cannot,
+         and as the "Loading..." indicator while a page is being fetched. -->
     <div class="load-more-wrap">
-        <button type="button" id="loadMoreBtn" class="load-more-btn" hidden>Load more</button>
+        <button type="button" id="loadMoreBtn" class="load-more-btn" data-i18n="load_more" hidden>Load more</button>
     </div>
 </main>
 
 <section class="contact-section">
     <div class="contact-box">
-        <h3 class="contact-title">Contact Us</h3>
-        <p class="contact-subtitle">Have feedback or a wallpaper request? Send us a message.</p>
+        <h3 class="contact-title" data-i18n="contact_title">Contact Us</h3>
+        <section class="contact-section" id="contact">
+
+        </section>
+        <p class="contact-subtitle" data-i18n="contact_sub">Have feedback or a wallpaper request? Send us a message.</p>
         <div class="contact-form">
-            <input type="text" id="usernameInput" placeholder="Write your name here" aria-label="Your name" maxlength="80" autocomplete="name">
-            <textarea id="messageInput" placeholder="Write your message here" aria-label="Your message" rows="5" maxlength="1000"></textarea>
-            <button type="button" id="sendBtn">Send Now!</button>
+            <input type="text" id="usernameInput" placeholder="Write your name here" aria-label="Your name" maxlength="80" autocomplete="name"
+                   data-i18n-attr="placeholder:name_ph;aria-label:name_aria">
+            <textarea id="messageInput" placeholder="Write your message here" aria-label="Your message" rows="5" maxlength="1000"
+                      data-i18n-attr="placeholder:msg_ph;aria-label:msg_aria"></textarea>
+            <button type="button" id="sendBtn" data-i18n="send_btn">Send Now!</button>
         </div>
     </div>
 </section>
 
 <footer class="main-footer">
-    <p class="footer-text">Made with love for nature lovers 2026 | Green Wings Wallpapers</p>
+    <nav class="footer-nav" aria-label="Footer" data-i18n-attr="aria-label:footer_nav_aria">
+        <button type="button" class="footer-link" data-info-open="about" aria-haspopup="dialog" data-i18n="footer_about">About</button>
+        <button type="button" class="footer-link" data-info-open="privacy" aria-haspopup="dialog" data-i18n="footer_privacy">Privacy Policy</button>
+        <a class="footer-support" href="https://ko-fi.com/greenwingswallpapers" target="_blank" rel="noopener noreferrer"
+           aria-label="Buy me a coffee on Ko-fi (opens in a new tab)" data-i18n-attr="aria-label:support_aria">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+            <span data-i18n="support_btn">Buy me a coffee</span>
+        </a>
+    </nav>
+    <p class="footer-text" data-i18n="footer">Made with love for nature lovers 2026 | Green Wings Wallpapers</p>
 </footer>
 
-<div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-label="Wallpaper preview">
-    <button type="button" class="close-modal" aria-label="Close preview">&times;</button>
-    <button type="button" class="lightbox-nav lightbox-prev" id="prevImg" aria-label="Previous wallpaper">&#8249;</button>
-    <img class="modal-content" id="modalImg" alt="">
-    <button type="button" class="lightbox-nav lightbox-next" id="nextImg" aria-label="Next wallpaper">&#8250;</button>
+<!-- About + Privacy: native <dialog> (focus trap, Escape and backdrop come from the browser). Opened by script.js. -->
+<dialog class="info-dialog" id="aboutDialog" aria-labelledby="aboutTitle">
+    <div class="info-shell">
+        <div class="info-head">
+            <h2 id="aboutTitle" data-i18n="about_title">About Green Wings</h2>
+            <button type="button" class="info-close" data-info-close aria-label="Close" data-i18n-attr="aria-label:info_close">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+        <div class="info-body">
+            <p class="info-lead" data-i18n="about_lead">Green Wings Wallpapers is a fast, privacy-friendly home for curated 4K nature and aesthetic wallpapers: forests, mountains, oceans, quiet skies and minimal scenes.</p>
+            <h3 data-i18n="about_h_found">What you’ll find</h3>
+            <ul class="info-list">
+                <li data-i18n="about_f1">Free high-definition wallpapers, sized for your screen when you download.</li>
+                <li data-i18n="about_f2">Built-in tools: Gradient Studio for custom gradient wallpapers, background blur and a Wallpaper of the Day.</li>
+                <li data-i18n="about_f3">Search, color and orientation filters, and favorites saved on your device.</li>
+                <li data-i18n="about_f4">Dark and light themes, English and Arabic, and offline support as an installable app.</li>
+            </ul>
+            <h3 data-i18n="about_h_credits">Photo credits</h3>
+            <p data-i18n="about_credits">Most photos come from Unsplash and are credited to their photographers. Visitors can also upload wallpapers, which are published after a quick review.</p>
+        </div>
+        <div class="info-foot">
+            <button type="button" class="info-btn" data-info-close data-i18n="info_close">Close</button>
+        </div>
+    </div>
+</dialog>
+
+<dialog class="info-dialog" id="privacyDialog" aria-labelledby="privacyTitle">
+    <div class="info-shell">
+        <div class="info-head">
+            <h2 id="privacyTitle" data-i18n="privacy_title">Privacy Policy</h2>
+            <button type="button" class="info-close" data-info-close aria-label="Close" data-i18n-attr="aria-label:info_close">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+        <div class="info-body">
+            <p class="info-meta" data-i18n="privacy_updated">Last updated: November 2026</p>
+            <p class="info-lead" data-i18n="privacy_lead">Short version: Green Wings respects your privacy. There are no accounts, no ads, no analytics and no tracking cookies, and we don’t collect personal data about you as you browse.</p>
+            <h3 data-i18n="privacy_h1">What stays on your device</h3>
+            <p data-i18n="privacy_p1">To work properly, the site uses your browser’s local storage and cache for your favorites, your theme, language and orientation choices, a short-lived color cache, and the offline files that make the app load fast. This data never leaves your device, and you can clear it at any time in your browser settings.</p>
+            <h3 data-i18n="privacy_h2">What you choose to send</h3>
+            <p data-i18n="privacy_p2">If you send a message through the contact form or upload a wallpaper, we receive what you submit (your name, message, image, title and description). We use it only to reply to you or to review the upload, and approved uploads are published on the site.</p>
+            <h3 data-i18n="privacy_h3">Technical data and third parties</h3>
+            <p data-i18n="privacy_p3a">Wallpapers are loaded from Unsplash. As with any image hosted elsewhere, Unsplash can see basic technical details such as your IP address when your browser requests a photo. Downloads are counted with Unsplash as its guidelines require, without sharing personal information about you. The site’s fonts are hosted on our own server.</p>
+            <p data-i18n="privacy_p3b">Like most websites, our server may briefly process technical request data, such as your IP address, to deliver pages and prevent abuse. We don’t use it to track you or build a profile.</p>
+            <h3 data-i18n="privacy_h4">Your choices and contact</h3>
+            <p data-i18n="privacy_p4">Clear this site’s data in your browser at any time to erase everything stored locally. For any privacy question, use the Contact Us form on this page.</p>
+        </div>
+        <div class="info-foot">
+            <button type="button" class="info-btn" data-info-close data-i18n="info_close">Close</button>
+        </div>
+    </div>
+</dialog>
+
+<div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <button type="button" class="close-modal" aria-label="Close preview" data-i18n-attr="aria-label:close_preview">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+
+    <div class="detail">
+        <div class="detail-media">
+            <button type="button" class="lightbox-nav lightbox-prev" id="prevImg" aria-label="Previous wallpaper" data-i18n-attr="aria-label:prev_wp">
+                <svg class="icon" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <img class="modal-content" id="modalImg" alt="">
+            <button type="button" class="lightbox-nav lightbox-next" id="nextImg" aria-label="Next wallpaper" data-i18n-attr="aria-label:next_wp">
+                <svg class="icon" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+        </div>
+
+        <div class="detail-info">
+            <h2 class="detail-title" id="detailTitle"></h2>
+            <div class="detail-author" id="detailAuthor"></div>
+            <dl class="detail-meta" id="detailMeta"></dl>
+            <!-- Smart Background Blur: live preview in CSS, full-quality canvas render on download -->
+            <div class="blur-tool" id="blurTool">
+                <label class="blur-head" for="blurRange">
+                    <span data-i18n="blur_label">Background blur</span>
+                    <output class="blur-value" id="blurValue" for="blurRange" dir="ltr">0px</output>
+                </label>
+                <input type="range" class="blur-range" id="blurRange" min="0" max="30" step="1" value="0"
+                       aria-label="Blur amount" data-i18n-attr="aria-label:blur_aria">
+            </div>
+            <div class="detail-actions" id="detailActions"></div>
+        </div>
+    </div>
 </div>
 
-<button id="backToTop" class="back-to-top" title="Go to top" aria-label="Go to top" type="button">
+<button id="backToTop" class="back-to-top" title="Go to top" aria-label="Go to top" type="button" data-i18n-attr="title:back_top;aria-label:back_top">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
-<script src="/static/script.js?v=59"></script>
+<script src="/static/js/script.js?v10" defer></script>
+<script src="/static/js/blur-tool.js?v1" defer></script>
+<script src="/static/js/smart-preload.js?v1" defer></script>
+<script src="/static/js/gradient-studio.js?v1" defer></script>
+
 </body>
 </html>

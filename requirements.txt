@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+Pillow
+httpx
+python-multipart
+python-dotenv
+supabase>=2.20,<3

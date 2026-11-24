@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Calculator</title>
+</head>
+<body>
+
+     <h1>Tracking personal expenses</h1>
+
+
+     <h3>Financial Summary:</h3>
+     <p>Total expenses: <strong>{{ total_spent }}</strong></p>
+
+     <hr>
+
+     <h3>Add a new expense:</h3>
+     <form method="POST">
+
+         <input type="text" name="item_name" placeholder="Example:Lunch, gasoline" required>
+
+         <input type="number" name="item_cost" placeholder="Cost in euros" required>
+
+         <button type="submit">Add Expense</button>
+     </form>
+
+</body>
+</html>

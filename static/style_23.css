@@ -18,13 +18,137 @@
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* =====================================================================
+   THEME VARIABLES
+   Dark is the default (values identical to the original design).
+   Light overrides the same names under [data-theme="light"].
+   The attribute is set on <html> by theme-init.js (before first paint) and by script.js (on toggle).
+   Switching themes only swaps these variables: no layout work, no re-render.
+   ===================================================================== */
 :root {
-    --header-h: 80px;           /* kept in sync with the real header height by script.js */
+    color-scheme: dark;               /* native scrollbars, file input, etc. follow the theme */
+
+    --header-h: 80px;                 /* kept in sync with the real header height by script.js */
     --safe-b: env(safe-area-inset-bottom, 0px);
+
+    /* ONE height for every control in the header (search box, language switcher, theme button, Upload button).
+       Change this single value to resize the whole navbar row. */
+    --ctl-h: 42px;
+    --ctl-radius: 10px;
+
+    /* Brand colours (same in both themes) */
     --green: #10b981;
     --green-dark: #059669;
     --neon: #00ff88;
-    --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    /* Latin text uses Plus Jakarta Sans. Arabic letters are not in that file, so the browser falls through
+       to the system Arabic fonts listed here (no web font, so no extra CSP rules are needed). */
+    --font: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, 'Geeza Pro', 'Noto Sans Arabic', system-ui, -apple-system, Roboto, Arial, sans-serif;
+
+    /* Page */
+    --bg: #0a0a0a;
+    --glow: rgba(0, 255, 136, 0.08);
+    --header-bg: rgba(10, 10, 10, 0.95);
+    --header-bg-mobile: rgba(10, 10, 10, 0.98);
+
+    /* Text */
+    --text: #ededed;
+    --heading: #f8fafc;
+    --text-strong: #ffffff;
+    --text-muted: #b3b3b3;
+    --text-soft: #94a3b8;
+    --text-hero: #cbd5e1;
+    --text-footer: #a0a0a0;
+    --placeholder: rgba(255, 255, 255, 0.7);
+    --placeholder-2: #6b7280;
+
+    /* Surfaces + borders */
+    --surface: #121212;
+    --card-bg: #101010;
+    --img-bg: #1e1e1e;
+    --border: #262626;
+    --border-hover: #404040;
+    --border-soft: rgba(255, 255, 255, 0.08);
+    --sep: #333;
+    --card-shadow: none;
+
+    /* Buttons */
+    --btn-bg: #1f2937;
+    --btn-border: #374151;
+    --on-accent: #0a0a0a;             /* text on green pills / buttons */
+
+    /* Upload popover */
+    --pop-bg: #1e293b;
+    --pop-border: #334155;
+    --pop-dash: #475569;
+    --pop-input-bg: #0f172a;
+    --pop-input-text: #f8fafc;
+    --shadow-pop: 0 12px 30px rgba(0, 0, 0, 0.45);
+
+    /* Inputs (contact form) */
+    --input-bg: #121212;
+    --input-border: rgba(255, 255, 255, 0.1);
+    --input-text: #e0e0e0;
+
+    /* Accent usages that need a darker green on a light background */
+    --accent-text: #10b981;           /* logo, outline buttons, hover on upload zone */
+    --nav-active: #2ecc71;
+    --focus: #00ff88;                 /* focus ring, link hover, download-button hover */
+    --focus-glow: rgba(0, 255, 136, 0.2);
+    --accent-hi-text: #0a0a0a;        /* text on the --focus coloured hover background */
+
+    --error: #f87171;
+    --search-cancel: invert(1);       /* the "x" inside <input type="search"> */
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+
+    --bg: #f4f7f5;
+    --glow: rgba(16, 185, 129, 0.10);
+    --header-bg: rgba(255, 255, 255, 0.92);
+    --header-bg-mobile: rgba(255, 255, 255, 0.98);
+
+    --text: #1b2a22;
+    --heading: #0f1f17;
+    --text-strong: #0f1f17;
+    --text-muted: #4b5d54;
+    --text-soft: #5b6b64;
+    --text-hero: #3d4f46;
+    --text-footer: #5b6b64;
+    --placeholder: rgba(15, 31, 23, 0.68);   /* was 0.55: raised so the search placeholder stays readable on white */
+    --placeholder-2: #8a9a92;
+
+    --surface: #ffffff;
+    --card-bg: #ffffff;
+    --img-bg: #e3eae6;
+    --border: #dbe4df;
+    --border-hover: #b6c5bd;
+    --border-soft: rgba(0, 0, 0, 0.08);
+    --sep: #d3ddd8;
+    --card-shadow: 0 1px 3px rgba(15, 31, 23, 0.07);
+
+    --btn-bg: #eef3f0;
+    --btn-border: #cdd9d3;
+
+    --pop-bg: #ffffff;
+    --pop-border: #d3ddd8;
+    --pop-dash: #b6c5bd;
+    --pop-input-bg: #f4f7f5;
+    --pop-input-text: #0f1f17;
+    --shadow-pop: 0 12px 30px rgba(15, 31, 23, 0.18);
+
+    --input-bg: #ffffff;
+    --input-border: rgba(0, 0, 0, 0.14);
+    --input-text: #1b2a22;
+
+    --accent-text: #047857;
+    --nav-active: #047857;
+    --focus: #059669;
+    --focus-glow: rgba(5, 150, 105, 0.22);
+    --accent-hi-text: #ffffff;
+
+    --error: #dc2626;
+    --search-cancel: none;
 }
 
 * {
@@ -36,7 +160,7 @@
 [hidden] { display: none !important; }
 
 html {
-    background-color: #0a0a0a;
+    background-color: var(--bg);
     min-height: 100%;
     scroll-padding-top: calc(var(--header-h) + 16px);
     -webkit-text-size-adjust: 100%;
@@ -45,7 +169,7 @@ html {
 body {
     font-family: var(--font);
     background-color: transparent;
-    color: #ededed;
+    color: var(--text);
     min-height: 100vh;
     min-height: 100dvh;
     display: flex;
@@ -64,14 +188,14 @@ body::before {
     z-index: -1;
     pointer-events: none;
     background:
-        radial-gradient(circle 450px at 0% 0%, rgba(0, 255, 136, 0.08), transparent),
-        radial-gradient(circle 450px at 100% 100%, rgba(0, 255, 136, 0.08), transparent);
+        radial-gradient(circle 450px at 0% 0%, var(--glow), transparent),
+        radial-gradient(circle 450px at 100% 100%, var(--glow), transparent);
 }
 
 img { max-width: 100%; }
 
 :focus-visible {
-    outline: 2px solid var(--neon);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
 }
 
@@ -98,13 +222,13 @@ img { max-width: 100%; }
     gap: 10px 24px;
     padding: 12px max(4%, env(safe-area-inset-right)) 12px max(4%, env(safe-area-inset-left));
     padding-top: calc(12px + env(safe-area-inset-top, 0px));
-    background: rgba(10, 10, 10, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border-soft);
 }
 .logo {
     font-size: 1.6rem;
     font-weight: bold;
-    color: var(--green);
+    color: var(--accent-text);
     white-space: nowrap;
 }
 
@@ -117,7 +241,7 @@ img { max-width: 100%; }
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #b3b3b3;
+    color: var(--text-muted);
     font-size: 16px;
     font-weight: 500;
     text-decoration: none;
@@ -134,96 +258,187 @@ img { max-width: 100%; }
     stroke-linejoin: round;
 }
 .nav-links a:hover,
-.nav-links a.active { color: #2ecc71; }
+.nav-links a.active { color: var(--nav-active); }
 
-/* ===== HEADER ACTIONS (Search + Upload) ===== */
+/* ===== HEADER ACTIONS (Search + Language + Theme + Upload) =====
+   Every control in this row is exactly --ctl-h tall, so they share one top edge, one centre line
+   and one bottom edge. */
 .header-actions {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
+/* ===== SEARCH BOX (a <form>: button click, Enter and the phone "search" key all submit it) =====
+   Every colour comes from a theme variable, so it stays readable in Dark and Light mode.
+   Focus: the whole box gets the green border + soft glow (same look as the contact form fields).
+   Box = --ctl-h tall; the input and the Search button fill its inner height (3px padding + 1px border). */
 .search-box {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     flex: 1 1 220px;
     min-width: 0;
     max-width: 360px;
-    background: #121212;
-    padding: 6px;
-    border-radius: 10px;
-    border: 1px solid #262626;
+    height: var(--ctl-h);
+    background: var(--surface);
+    padding: 3px;
+    border-radius: var(--ctl-radius);
+    border: 1px solid var(--border);
 }
-.search-box:hover,
-.search-box:focus-within { border-color: #404040; }
+.search-box:hover { border-color: var(--border-hover); }
+.search-box:focus-within {
+    border-color: var(--focus);
+    box-shadow: 0 0 0 3px var(--focus-glow);
+}
 .search-box input {
     flex: 1;
     min-width: 0;
     width: 100%;
+    height: 100%;
     background: none !important;
     border: none !important;
     box-shadow: none !important;
     outline: none;
-    padding: 8px 14px;
-    color: #ffffff !important;
+    padding: 0 14px;
+    color: var(--text-strong) !important;
     font-size: 0.95rem;
 }
-.search-box input::placeholder { color: rgba(255, 255, 255, 0.7); opacity: 1; }
-.search-box input::-webkit-search-cancel-button { filter: invert(1); }
+.search-box input::placeholder { color: var(--placeholder); opacity: 1; }
+.search-box input::-webkit-search-cancel-button { filter: var(--search-cancel); }
+
+/* Dark text on green (about 7.8:1) instead of white on green (about 2.5:1), same as the EN/AR and orientation pills.
+   Radius = box radius minus the box padding, so the button follows the curve of the box. */
 #search-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-shrink: 0;
+    height: 100%;
     background-color: var(--green);
-    color: #fff;
+    color: var(--on-accent);
     border: none;
-    padding: 9px 20px;
-    border-radius: 6px;
+    padding: 0 16px;
+    border-radius: calc(var(--ctl-radius) - 3px);
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.9rem;
+    line-height: 1;
     white-space: nowrap;
+}
+#search-btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 #search-btn:hover { background-color: var(--green-dark); }
 
-/* ===== UPLOAD TRIGGER + POPOVER (<details>) ===== */
+/* ===== LANGUAGE SWITCHER (EN | AR) ===== */
+.lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    height: var(--ctl-h);
+    padding: 3px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--ctl-radius);
+}
+.lang-btn {
+    min-width: 40px;
+    height: 100%;
+    padding: 0 10px;
+    background: none;
+    border: none;
+    border-radius: calc(var(--ctl-radius) - 3px);
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;      /* Latin letters only ("EN" / "AR"), so it is safe in RTL */
+    cursor: pointer;
+}
+.lang-btn:hover { color: var(--text-strong); }
+.lang-btn.active,
+.lang-btn[aria-pressed="true"] {
+    background: var(--green);
+    color: var(--on-accent);
+}
+.lang-sep {
+    width: 1px;
+    height: 14px;
+    background: var(--sep);
+}
+/* The separator disappears next to the highlighted pill */
+.lang-btn.active + .lang-sep,
+.lang-sep:has(+ .lang-btn.active) { background: transparent; }
+
+/* ===== THEME TOGGLE (Dark / Light) =====
+   Both icons are in the HTML; CSS shows the right one, so the swap is instant (no JS repaint).
+   Dark theme shows the SUN (= "switch to light"), Light theme shows the MOON (= "switch to dark"). */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--ctl-h);
+    height: var(--ctl-h);
+    padding: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--ctl-radius);
+    color: var(--text-muted);
+    cursor: pointer;
+}
+.theme-toggle:hover {
+    color: var(--text-strong);
+    border-color: var(--border-hover);
+}
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+.theme-toggle .icon-moon { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+
+/* ===== UPLOAD TRIGGER + POPOVER (<details>) =====
+   The Upload button now matches the Search button: same height, same radius, same dark-on-green text and weight. */
 .upload-trigger-wrapper { position: relative; flex-shrink: 0; }
 .upload-trigger-wrapper summary { list-style: none; cursor: pointer; }
 .upload-trigger-wrapper summary::-webkit-details-marker { display: none; }
 .upload-trigger-wrapper summary::marker { content: ""; }
 
-.upload-nav-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 40px;
-    background-color: var(--green);
-    color: #fff;
-    padding: 9px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    white-space: nowrap;
-}
-.upload-nav-btn:hover { background-color: var(--green-dark); }
-.upload-nav-icon { font-size: 1rem; }
-
 .upload-popover {
     position: absolute;
     top: calc(100% + 10px);
-    right: 0;
+    inset-inline-end: 0;          /* right in LTR, left in RTL: always lines up with the Upload button */
     width: min(320px, calc(100vw - 32px));
     max-height: calc(100dvh - var(--header-h) - 24px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    background-color: #1e293b;
-    border: 1px solid #334155;
+    background-color: var(--pop-bg);
+    border: 1px solid var(--pop-border);
     border-radius: 12px;
     padding: 18px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    box-shadow: var(--shadow-pop);
     z-index: 300;
 }
 .upload-form { display: flex; flex-direction: column; gap: 12px; }
-.upload-note { color: #94a3b8; font-size: 0.8rem; text-align: center; }
+.upload-note { color: var(--text-soft); font-size: 0.8rem; text-align: center; }
 
 .upload-file-label {
     display: flex;
@@ -232,9 +447,9 @@ img { max-width: 100%; }
     justify-content: center;
     gap: 6px;
     padding: 22px 12px;
-    border: 2px dashed #475569;
+    border: 2px dashed var(--pop-dash);
     border-radius: 8px;
-    color: #94a3b8;
+    color: var(--text-soft);
     font-size: 0.85rem;
     text-align: center;
     overflow-wrap: anywhere;
@@ -242,7 +457,7 @@ img { max-width: 100%; }
 }
 .upload-file-label:hover {
     border-color: var(--green);
-    color: var(--green);
+    color: var(--accent-text);
     background-color: rgba(16, 185, 129, 0.06);
 }
 .upload-file-icon { font-size: 1.5rem; }
@@ -250,11 +465,11 @@ img { max-width: 100%; }
 .upload-form input[type="text"],
 .upload-form textarea {
     width: 100%;
-    background-color: #0f172a !important;
-    border: 1px solid #334155 !important;
+    background-color: var(--pop-input-bg) !important;
+    border: 1px solid var(--pop-border) !important;
     border-radius: 8px;
     padding: 10px 12px;
-    color: #f8fafc !important;
+    color: var(--pop-input-text) !important;
     font-size: 0.9rem;
 }
 .upload-form textarea { resize: vertical; }
@@ -271,7 +486,7 @@ img { max-width: 100%; }
 }
 #uploadSubmitBtn:hover { background-color: var(--green-dark); }
 #uploadSubmitBtn:disabled { opacity: 0.6; cursor: wait; }
-
+#uploadSubmitBtn {color: var(--on-accent);}
 /* ===== HERO ===== */
 .hero-section {
     position: relative;
@@ -289,7 +504,7 @@ img { max-width: 100%; }
     font-size: clamp(1rem, 2.5vw, 1.25rem);
     max-width: 700px;
     margin: 0 auto;
-    color: #cbd5e1;
+    color: var(--text-hero);
 }
 
 /* ===== GALLERY ===== */
@@ -310,9 +525,9 @@ img { max-width: 100%; }
 }
 .section-title {
     font-size: clamp(1.4rem, 3vw, 2rem);
-    color: #f8fafc;
-    border-left: 5px solid var(--green);
-    padding-left: 15px;
+    color: var(--heading);
+    border-inline-start: 5px solid var(--green);   /* left in LTR, right in RTL */
+    padding-inline-start: 15px;
     overflow-wrap: anywhere;
 }
 
@@ -321,8 +536,8 @@ img { max-width: 100%; }
     display: flex;
     gap: 4px;
     padding: 4px;
-    background: #121212;
-    border: 1px solid #262626;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 10px;
 }
 .orientation-filter button {
@@ -331,18 +546,73 @@ img { max-width: 100%; }
     background: none;
     border: none;
     border-radius: 7px;
-    color: #b3b3b3;
+    color: var(--text-muted);
     font-weight: 600;
     font-size: 0.88rem;
     white-space: nowrap;
     cursor: pointer;
 }
-.orientation-filter button:hover { color: #fff; }
+.orientation-filter button:hover { color: var(--text-strong); }
 .orientation-filter button.active,
 .orientation-filter button[aria-pressed="true"] {
     background: var(--green);
-    color: #0a0a0a;
+    color: var(--on-accent);
 }
+
+/* ===== QUICK FILTER PILLS (above the grid) =====
+   One horizontally scrollable row of pill buttons. The scrollbar is hidden, touch scrolling keeps its native
+   momentum, and a sideways swipe never drags the page along (overscroll-behavior-x). Colours come from the
+   theme variables and spacing from logical properties, so Dark / Light and EN / AR need no overrides.
+   script.js toggles .active + aria-pressed and centres the active pill (scrollLeft, no inline styles). */
+.category-pills {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    margin-block-end: clamp(20px, 3vw, 28px);
+    margin-inline: -4px;             /* cancels the padding below, so the first pill lines up with the content edge */
+    padding: 4px;                    /* room for the focus ring, which overflow would otherwise clip */
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;           /* Firefox */
+}
+.category-pills::-webkit-scrollbar { display: none; }   /* Chrome / Safari / Edge */
+
+.category-pill {
+    flex: 0 0 auto;                  /* never shrinks: the row scrolls instead */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 8px 18px;
+    background: var(--surface);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.category-pill.active,
+.category-pill[aria-pressed="true"] {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--on-accent);
+}
+.category-pill:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (hover: hover) {
+    .category-pill:hover:not(.active) {
+        background: var(--btn-bg);
+        border-color: var(--border-hover);
+        color: var(--text-strong);
+    }
+}
+[dir="rtl"] .category-pill { line-height: 1.6; }   /* Arabic letters need more room, same as .download-btn */
 
 .grid-layout {
     display: grid;
@@ -355,9 +625,10 @@ img { max-width: 100%; }
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: #101010;
-    border: 1px solid #262626;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
     border-radius: 12px;
+    box-shadow: var(--card-shadow);
     overflow: hidden;
     /* The browser skips layout + paint for cards far off-screen. */
     content-visibility: auto;
@@ -371,15 +642,65 @@ img { max-width: 100%; }
     object-fit: cover;
     display: block;
     cursor: zoom-in;
-    background-color: #1e1e1e;   /* static placeholder (script.js uses the photo's own colour) */
+    background-color: var(--img-bg);   /* static placeholder (script.js uses the photo's own colour) */
 }
+
+/* Portrait results: script.js adds .is-portrait to the grid while the Portrait filter is on, so vertical
+   photos are shown in tall cards instead of being cropped into landscape ones. */
+.grid-layout.is-portrait {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+}
+.grid-layout.is-portrait .card img { aspect-ratio: 3 / 4; }
+
+/* ===== NO RESULTS (search returned nothing) ===== */
+.no-results {
+    grid-column: 1 / -1;            /* spans the whole grid, also in Portrait mode */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    min-height: 40vh;
+    padding: clamp(40px, 8vw, 90px) 20px;
+    text-align: center;
+}
+.no-results-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--accent-text);
+}
+.no-results-icon svg {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.no-results p {
+    max-width: 30em;
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--heading);
+    text-wrap: balance;
+}
+
 .card-info {
     flex: 1;
     display: flex;
     flex-direction: column;
     padding: clamp(16px, 3vw, 25px);
 }
-/* Clamp ONLY the text, never the layout containers or buttons. */
+/* Clamp ONLY the text, never the layout containers or buttons.
+   The full text stays available on hover through the title="" attribute that script.js sets on these elements. */
 .card-info h3,
 .card-info p {
     display: -webkit-box;
@@ -392,18 +713,18 @@ img { max-width: 100%; }
 .card-info h3 {
     font-size: 1.25rem;
     margin-bottom: 10px;
-    color: #f1f5f9;
+    color: var(--heading);
 }
 .card-info p {
     font-size: 0.95rem;
-    color: #94a3b8;
+    color: var(--text-soft);
     margin-bottom: 20px;
 }
 .attribution a {
-    color: #94a3b8;
+    color: var(--text-soft);
     text-decoration: underline;
 }
-.attribution a:hover { color: var(--neon); }
+.attribution a:hover { color: var(--focus); }
 
 .card-actions {
     margin-top: auto;
@@ -413,11 +734,11 @@ img { max-width: 100%; }
 }
 
 @media (hover: hover) {
-    .card:hover { border-color: #404040; }
+    .card:hover { border-color: var(--border-hover); }
     .download-btn:hover:not(:disabled) {
-        background-color: var(--neon);
-        border-color: var(--neon);
-        color: #0a0a0a;
+        background-color: var(--focus);
+        border-color: var(--focus);
+        color: var(--accent-hi-text);
     }
     .favorite-btn:hover { background: rgba(0, 0, 0, 0.85); }
     #sendBtn:hover { background-color: var(--green-dark); }
@@ -434,9 +755,9 @@ img { max-width: 100%; }
     min-height: 48px;
     margin-top: auto;
     padding: 12px 16px;
-    background-color: #1f2937;
-    color: #f8fafc;
-    border: 1px solid #374151;
+    background-color: var(--btn-bg);
+    color: var(--heading);
+    border: 1px solid var(--btn-border);
     border-radius: 10px;
     font-weight: 700;
     font-size: 0.95rem;
@@ -448,7 +769,7 @@ img { max-width: 100%; }
 .download-btn.secondary {
     min-height: 40px;
     background-color: transparent;
-    color: #94a3b8;
+    color: var(--text-soft);
     font-size: 0.85rem;
     font-weight: 600;
 }
@@ -469,8 +790,8 @@ img { max-width: 100%; }
 .load-more-btn,
 .retry-btn {
     background: transparent;
-    color: var(--green);
-    border: 1px solid var(--green);
+    color: var(--accent-text);
+    border: 1px solid var(--accent-text);
     border-radius: 10px;
     padding: 12px 32px;
     min-height: 46px;
@@ -479,7 +800,7 @@ img { max-width: 100%; }
     cursor: pointer;
 }
 .load-more-btn:hover:not(:disabled),
-.retry-btn:hover { background-color: var(--green); color: #0a0a0a; }
+.retry-btn:hover { background-color: var(--green); border-color: var(--green); color: var(--on-accent); }
 .load-more-btn:disabled { opacity: 0.6; cursor: wait; }
 .retry-btn { grid-column: 1 / -1; justify-self: center; }
 
@@ -492,14 +813,15 @@ img { max-width: 100%; }
 .contact-box {
     width: 100%;
     max-width: 480px;
-    background-color: #121212;
-    border: 1px solid #262626;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
+    box-shadow: var(--card-shadow);
     padding: clamp(24px, 5vw, 36px) clamp(18px, 5vw, 32px);
     text-align: center;
 }
-.contact-title { font-size: 1.5rem; color: #f8fafc; margin-bottom: 8px; }
-.contact-subtitle { font-size: 0.9rem; color: #94a3b8; margin-bottom: 24px; }
+.contact-title { font-size: 1.5rem; color: var(--heading); margin-bottom: 8px; }
+.contact-subtitle { font-size: 0.9rem; color: var(--text-soft); margin-bottom: 24px; }
 .contact-form { display: flex; flex-direction: column; gap: 14px; }
 .contact-form input,
 .contact-form textarea {
@@ -510,10 +832,10 @@ img { max-width: 100%; }
 }
 .contact-form textarea { resize: vertical; min-height: 120px; }
 .contact-form input::placeholder,
-.contact-form textarea::placeholder { color: #6b7280; }
+.contact-form textarea::placeholder { color: var(--placeholder-2); }
 #sendBtn {
     background-color: var(--green);
-    color: #0a0a0a;
+    color: var(--on-accent);
     border: none;
     border-radius: 8px;
     padding: 12px;
@@ -525,32 +847,33 @@ img { max-width: 100%; }
 }
 #sendBtn:disabled { opacity: 0.6; cursor: wait; }
 
-/* Shared dark input styling + green focus ring */
+/* Shared input styling + green focus ring */
 .contact-section input,
 input[type="text"],
 textarea {
-    background-color: #121212 !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #e0e0e0 !important;
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--input-text) !important;
 }
 .contact-section input:focus,
 .contact-section textarea:focus,
 input[type="text"]:focus,
 textarea:focus {
     outline: none !important;
-    border-color: var(--neon) !important;
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2) !important;
+    border-color: var(--focus) !important;
+    box-shadow: 0 0 10px var(--focus-glow) !important;
 }
 
 /* ===== FOOTER ===== */
 .main-footer { text-align: center; padding: 30px 20px; margin-top: 30px; }
-.footer-text { color: #a0a0a0; font-size: 14px; margin: 0; }
+.footer-text { color: var(--text-footer); font-size: 14px; margin: 0; }
 
-/* ===== QUALITY BADGE ===== */
+/* ===== QUALITY BADGE =====
+   Sits on top of a photo, so it stays dark in BOTH themes. */
 .quality-badge {
     position: absolute;
     top: 15px;
-    left: 15px;
+    inset-inline-start: 15px;     /* left in LTR, right in RTL */
     background: rgba(10, 10, 10, 0.85);
     color: var(--neon);
     font-size: 10px;
@@ -563,11 +886,11 @@ textarea:focus {
 }
 .quality-badge.hd-subtle { color: #94a3b8; border-color: rgba(255, 255, 255, 0.1); }
 
-/* ===== FAVORITE BUTTON ===== */
+/* ===== FAVORITE BUTTON (also on top of a photo: same in both themes) ===== */
 .favorite-btn {
     position: absolute;
     top: 12px;
-    right: 12px;
+    inset-inline-end: 12px;       /* right in LTR, left in RTL */
     background: rgba(0, 0, 0, 0.6);
     color: #ffffff;
     border: none;
@@ -603,7 +926,7 @@ textarea:focus {
 }
 .back-to-top.show { display: flex; }
 
-/* ===== TOAST ===== */
+/* ===== TOAST (dark pill in both themes) ===== */
 .toast-notification {
     position: fixed;
     bottom: calc(30px + var(--safe-b));
@@ -622,7 +945,8 @@ textarea:focus {
 }
 .toast-notification.toast-error { background-color: #b91c1c; }
 
-/* ===== IMAGE LIGHTBOX ===== */
+/* ===== IMAGE LIGHTBOX (dark in both themes: photos look best on black) =====
+   Buttons use physical left/right on purpose (never mirrored): ArrowLeft / swipe = previous in both languages. */
 .modal {
     display: none;             /* script.js switches this to flex */
     align-items: center;
@@ -648,12 +972,7 @@ textarea:focus {
     cursor: pointer;
 }
 .close-modal:hover { color: #00ff80; }
-.modal-content {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    border-radius: 12px;
-}
+
 .lightbox-nav {
     position: absolute;
     top: 50%;
@@ -672,6 +991,20 @@ textarea:focus {
 .lightbox-nav:hover { background: rgba(0, 0, 0, 0.8); color: #00ff80; }
 .lightbox-prev { left: max(8px, env(safe-area-inset-left)); }
 .lightbox-next { right: max(8px, env(safe-area-inset-right)); }
+
+/* ===== RTL (Arabic) =====
+   Most mirroring is automatic (flexbox / grid follow dir="rtl", and the rules above use logical properties).
+   Only the things below need explicit help. */
+[dir="rtl"] body { line-height: 1.6; }
+[dir="rtl"] .hero-title {
+    letter-spacing: 0;            /* any letter-spacing breaks the joined Arabic letters */
+    line-height: 1.4;
+}
+[dir="rtl"] .download-btn { line-height: 1.5; }
+[dir="rtl"] .back-to-top {
+    right: auto;
+    left: max(20px, env(safe-area-inset-left));
+}
 
 /* ===== RESPONSIVE ===== */
 
@@ -697,14 +1030,19 @@ textarea:focus {
         gap: 8px 12px;
         padding-top: calc(10px + env(safe-area-inset-top, 0px));
         padding-bottom: 10px;
-        background: rgba(10, 10, 10, 0.98);
+        background: var(--header-bg-mobile);
     }
-    .logo { order: 1; margin-right: auto; font-size: 1.35rem; }
+    .logo { order: 1; margin-inline-end: auto; font-size: 1.35rem; }
 
+    /* header-actions dissolves: logo | EN-AR | theme | Upload on the first row, search on its own row.
+       All of them keep the same --ctl-h height, so the row stays level. */
     .header-actions { display: contents; }
-    .upload-trigger-wrapper { order: 2; position: static; }
-    .search-box { order: 3; flex: 1 1 100%; max-width: none; border-radius: 8px; }
-    .upload-nav-btn { padding: 9px 14px; }
+    .lang-switcher { order: 2; }
+    .theme-toggle { order: 2; }   /* same order as the language switcher: DOM order puts it right after */
+    .upload-trigger-wrapper { order: 3; position: static; }
+    .search-box { order: 4; flex: 1 1 100%; max-width: none; }
+    .upload-nav-btn { padding: 0 14px; }
+    .lang-btn { min-width: 36px; padding: 0 8px; }
 
     .upload-popover {
         left: 4%;
@@ -726,8 +1064,8 @@ textarea:focus {
         gap: 0;
         overflow: visible;
         padding: 6px 4px calc(6px + var(--safe-b));
-        background: rgba(10, 10, 10, 0.98);
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        background: var(--header-bg-mobile);
+        border-top: 1px solid var(--border-soft);
         z-index: 1000;
     }
     .nav-links a {
@@ -746,8 +1084,8 @@ textarea:focus {
     .back-to-top { bottom: calc(80px + var(--safe-b)); }
     .toast-notification { bottom: calc(84px + var(--safe-b)); }
 
-    .quality-badge { top: 10px; left: 10px; }
-    .favorite-btn  { top: 8px; right: 8px; }
+    .quality-badge { top: 10px; inset-inline-start: 10px; }
+    .favorite-btn  { top: 8px; inset-inline-end: 8px; }
 
     /* 16px inputs stop iOS Safari from zooming the page on focus */
     .search-box input,
@@ -759,10 +1097,20 @@ textarea:focus {
     .lightbox-nav { width: 40px; height: 56px; font-size: 32px; }
 }
 
-/* Very small phones */
-@media (max-width: 360px) {
+/* Small phones: the theme button needs room, so the Upload button becomes icon-only
+   (it keeps its accessible name via aria-label) and the logo shrinks a little.
+   This keeps  logo | EN-AR | theme | Upload  on ONE row. */
+@media (max-width: 440px) {
     .upload-nav-label { display: none; }
+    .main-header { column-gap: 8px; }
+    .logo { font-size: 1.2rem; }
+}
+
+/* Very small phones (heights stay equal to --ctl-h; only the theme button gets narrower) */
+@media (max-width: 360px) {
     .nav-links a { min-width: 48px; }
+    .lang-btn { min-width: 32px; padding: 0 6px; }
+    .theme-toggle { width: 38px; }
 }
 
 /* Short landscape phones */
@@ -777,117 +1125,1040 @@ textarea:focus {
     scroll-behavior: auto !important;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ===== ONE EXCEPTION: a very short colour fade while the theme is being switched =====
+   script.js adds .theme-fade to <html> for ~300 ms during a toggle, then removes it, so nothing
+   transitions during normal use / scrolling. Only colour properties fade (no layout, no transforms).
+   Want a fully instant switch instead? Delete this whole block. */
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    html.theme-fade,
+    html.theme-fade *,
+    html.theme-fade *::before,
+    html.theme-fade *::after { transition: none !important; }
+}
+
+
+.no-results-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.no-results-chips button {
+    min-height: 40px;
+    padding: 8px 16px;
+    background: var(--surface);
+    color: var(--accent-text);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+}
+@media (hover: hover) { .no-results-chips button:hover { border-color: var(--green); } }
+
+
+
+@media (min-width: 651px) and (max-width: 1180px) {
+    .card img { aspect-ratio: 4 / 3; }
+    .grid-layout.is-portrait .card img { aspect-ratio: 3 / 4; }
+}
+
+/* ===== ICONS (inline Lucide SVG; colour comes from the parent via currentColor) ===== */
+.icon {
+    width: 1.25em;
+    height: 1.25em;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+.favorite-btn .icon { width: 22px; height: 22px; }
+.favorite-btn.is-favorite .icon { fill: currentColor; }      /* outline heart -> filled red heart */
+
+.upload-nav-icon { display: inline-flex; }
+.upload-nav-icon .icon { width: 18px; height: 18px; }
+.upload-file-icon .icon { width: 32px; height: 32px; stroke-width: 1.5; }
+
+.orientation-filter button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.orientation-filter button .icon { width: 16px; height: 16px; }
+
+.close-modal,
+.lightbox-nav { display: flex; align-items: center; justify-content: center; }
+.close-modal .icon { width: 30px; height: 30px; }
+.lightbox-nav .icon { width: 28px; height: 28px; }
+
+.empty-icon { margin-bottom: 12px; color: var(--accent-text); }
+.empty-icon .icon { width: 44px; height: 44px; stroke-width: 1.5; }
+
+.upload-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: var(--ctl-h);
+    min-width: var(--ctl-h);
+    background-color: transparent;
+    color: var(--accent-text);
+    border: 1px solid var(--accent-text);
+    padding: 0 16px;
+    border-radius: var(--ctl-radius);
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1;
+    white-space: nowrap;
+}
+.upload-trigger-wrapper[open] .upload-nav-btn { background-color: rgba(16, 185, 129, 0.14); }   /* popover open */
+@media (hover: hover) {
+    .upload-nav-btn:hover {
+        background-color: var(--green);
+        border-color: var(--green);
+        color: var(--on-accent);
+    }
+}
+
+a.logo { text-decoration: none; }
+@media (hover: hover) { a.logo:hover { color: var(--focus); } }
+
+
+.card-info { min-width: 0; }
+.card-info h3,
+.card-info p {
+    display: block;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-open {
+    position: absolute;
+    inset: 0;
+    z-index: 1;                    /* above the image and text, below the heart (10) and the badge (20) */
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.card-open:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; }
+.attribution a { position: relative; z-index: 2; }   /* photographer links stay clickable above the overlay */
+
+
+/* ===== PHOTO DETAIL VIEW ===== */
+.detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    grid-template-rows: minmax(0, 1fr);
+    width: min(1200px, 100%);
+    height: min(100%, 820px);
+    background: var(--surface);          /* the panel follows the theme; the backdrop and photo stay dark */
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+.detail-media { position: relative; min-width: 0; min-height: 0; background: #000; }
+.modal-content {
+    display: block;
+    width: 100%;
+    pointer-events: none;
+    height: 100%;
+    object-fit: contain;                 /* whole photo, never stretched or cropped */
+    object-position: center;
+}
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 44px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.lightbox-prev { left: 8px; }
+.lightbox-next { right: 8px; }
+@media (hover: hover) { .lightbox-nav:hover { background: rgba(0, 0, 0, 0.8); color: #00ff80; } }
+
+.detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+    padding: 24px 22px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    color: var(--text);
+}
+.detail-title { font-size: 1.3rem; line-height: 1.3; color: var(--heading); overflow-wrap: anywhere; }
+.detail-author p { font-size: 0.92rem; color: var(--text-soft); overflow-wrap: anywhere; }
+.detail-meta { display: grid; }
+.detail-row { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.detail-row dt { color: var(--text-soft); }
+.detail-row dd { font-weight: 600; color: var(--heading); text-align: end; }
+
+.detail-actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+.detail-actions .download-btn { margin-top: 0; }
+.detail-fav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    background: transparent;
+    color: var(--heading);
+    border: 1px solid var(--btn-border);
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+.detail-fav-btn.is-favorite { color: #ef4444; border-color: currentColor; }
+.detail-fav-btn.is-favorite .icon { fill: currentColor; }
+
+/* Phones and iPad portrait: photo on top, info below, the whole card scrolls */
+@media (max-width: 900px) {
+    .detail { display: block; height: auto; max-height: 100%; overflow-y: auto; overscroll-behavior: contain; }
+    .detail-media { height: 50vh; height: 50dvh; }
+    .detail-info { overflow: visible; padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ===== MENU DROPDOWN (Upload + Contact) ===== */
+.menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ctl-h);
+    height: var(--ctl-h);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--ctl-radius);
+    color: var(--text-muted);
+    cursor: pointer;
+}
+.menu-btn .icon { width: 20px; height: 20px; }
+.menu-wrapper[open] > .menu-btn { color: var(--accent-text); border-color: var(--accent-text); }
+@media (hover: hover) { .menu-btn:hover { color: var(--text-strong); border-color: var(--border-hover); } }
+
+.menu-panel { gap: 2px; padding: 8px; }
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+.menu-item .icon { width: 18px; height: 18px; color: var(--accent-text); }
+.menu-item .menu-chevron { margin-inline-start: auto; color: var(--text-soft); }
+.menu-upload[open] > .menu-item .menu-chevron { transform: rotate(180deg); }
+@media (hover: hover) { .menu-item:hover { background: var(--btn-bg); } }
+.menu-upload .upload-form { padding: 8px 6px 10px; }
+
+
+/* Lightbox: no transitions, no animations */
+.card-link { display: block; }
+#lightbox {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+  background: #000; color: #fff; overscroll-behavior: contain;
+}
+#lightbox[open] { display: grid; place-items: center; }  /* only when open, or it overrides display:none */
+#lightbox::backdrop { background: #000; }
+html:has(#lightbox[open]) { overflow: hidden; }
+#lb-img { max-width: 100vw; max-height: 100dvh; object-fit: contain; touch-action: pan-y pinch-zoom; }
+
+.lb-bar {
+  position: absolute; inset-inline: 0; bottom: 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: rgba(0, 0, 0, .6);
+}
+.lb-credit { margin-inline-end: auto; }
+.lb-credit a { color: inherit; }
+#lb-source::before { content: " · "; }
+.lb-bar .fav-btn { position: static; flex: none; }
+.lb-bar button, .lb-bar select { min-height: 44px; }
+
+.lb-nav {
+  position: absolute; top: 50%; margin-top: -28px; width: 48px; height: 56px;
+  border: 0; background: rgba(0, 0, 0, .45); color: #fff;
+  font-size: 32px; cursor: pointer; touch-action: manipulation;
+}
+#lb-prev { inset-inline-start: 0; }  #lb-prev::before { content: "‹"; }
+#lb-next { inset-inline-end: 0; }    #lb-next::before { content: "›"; }
+:root[dir="rtl"] .lb-nav::before { display: inline-block; transform: scaleX(-1); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+
+/* =====================================================================
+   BLUR-UP PLACEHOLDERS + INFINITE SCROLL  (feature #1)
+   No transitions and no animations (see the safety net above): the blurred placeholder is
+   simply removed by script.js the moment the sharp image has loaded, so the swap is instant.
+   ===================================================================== */
+
+/* Wraps the card photo. It holds the photo's own colour, the blurred placeholder underneath
+   and the sharp <img> on top. Its height comes from the image's aspect-ratio, so every
+   existing  .card img  /  .is-portrait  /  tablet rule keeps controlling the card shape. */
+.card-media {
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: var(--img-bg);   /* script.js replaces it with the photo's own colour */
+}
+/* Sits above the placeholder and is see-through until its pixels arrive.
+   (Same specificity as  .card img  above, and it comes later, so it wins.) */
+.card-media img {
+    position: relative;
+    background-color: transparent;
+}
+/* The tiny placeholder, stretched to cover the photo area and blurred. It reaches 24px past
+   every edge (the wrapper clips it) so the blur never fades out at the border of the card. */
+.card-lqip {
+    position: absolute;
+    inset: -24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(18px);
+    pointer-events: none;
+}
+
+/* Invisible marker under the grid: script.js watches it and loads the next page just before it scrolls into view. */
+#load-sentinel {
+    width: 100%;
+    height: 1px;
+    pointer-events: none;
+}
+
+
+/* ===== SMART BACKGROUND BLUR (Lightbox) ===== */
+.detail-media { overflow: hidden; }                 /* the 1.05 zoom must never spill over the arrows / panel */
+.modal-content.is-blurred { will-change: filter, transform; }
+
+.blur-tool {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 16px;
+    background: var(--btn-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+.blur-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--heading);
+}
+.blur-value {
+    min-width: 4.2em;
+    padding: 2px 10px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--on-accent);
+    background: var(--green);
+    border-radius: 999px;
+}
+
+.blur-range {
+    --pct: 0%;                                       /* filled part of the track, set by blur-tool.js */
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 32px;
+    background: transparent;
+    cursor: pointer;
+}
+.blur-range::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--green) var(--pct), var(--border-hover) var(--pct));
+}
+[dir="rtl"] .blur-range::-webkit-slider-runnable-track {
+    background: linear-gradient(to left, var(--green) var(--pct), var(--border-hover) var(--pct));
+}
+.blur-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    margin-top: -8px;
+    background: #fff;
+    border: 3px solid var(--green);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+.blur-range::-moz-range-track { height: 6px; border-radius: 999px; background: var(--border-hover); }
+.blur-range::-moz-range-progress { height: 6px; border-radius: 999px; background: var(--green); }
+.blur-range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border: 3px solid var(--green);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+.blur-range:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 6px; }
+
+
+/* =====================================================================
+   WALLPAPER OF THE DAY
+   Fixed height => the space is reserved before the image arrives (CLS = 0).
+   The photo sits under a dark scrim, so the text is white in BOTH themes (like the quality badge).
+   Only logical properties are used: the layout mirrors in RTL by itself. No transitions, no animations.
+   ===================================================================== */
+.wotd { margin-bottom: clamp(24px, 4vw, 40px); }
+
+.wotd-card {
+    position: relative;
+    height: clamp(220px, 34vw, 380px);
+    background-color: var(--img-bg);               /* script.js swaps in the photo's own colour */
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* The sharp image sits on top of .card-lqip (the blurred placeholder, styled in the blur-up section above). */
+.wotd-img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.wotd-scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.28) 45%, transparent 75%);
+}
+
+/* Invisible button stretched over the whole card (same pattern as .card-open) */
+.wotd-open {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.wotd-open:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; }
+
+.wotd-badge {
+    position: absolute;
+    top: 14px;
+    inset-inline-start: 14px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(10, 10, 10, 0.8);
+    color: var(--neon);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    pointer-events: none;
+}
+.wotd-badge .icon { width: 14px; height: 14px; fill: currentColor; }
+
+.wotd-body {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    padding: clamp(16px, 3vw, 28px);
+    color: #fff;
+    pointer-events: none;                           /* clicks fall through to .wotd-open ... */
+}
+.wotd-text { min-width: 0; }
+.wotd-title {
+    margin-bottom: 6px;
+    font-size: clamp(1.15rem, 2.6vw, 1.9rem);
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.wotd-credit {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.wotd .attribution a { color: inherit; pointer-events: auto; }    /* ... except the required Unsplash links */
+
+.wotd-cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    background: var(--green);
+    color: var(--on-accent);
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    white-space: nowrap;
+}
+
+@media (hover: hover) {
+    .wotd-card:hover { border-color: var(--border-hover); }
+    .wotd-card:hover .wotd-cta { background: var(--focus); color: var(--accent-hi-text); }
+}
+
+[dir="rtl"] .wotd-title { line-height: 1.5; }
+
+@media (max-width: 650px) {
+    .wotd-badge { top: 10px; inset-inline-start: 10px; }
+}
+@media (max-width: 520px) {
+    .wotd-cta { display: none; }                    /* the whole card is the button anyway */
+}
+
+
+
+/* ==========================================================================
+   GRADIENT STUDIO  (append to the very end of style_23.css, then bump ?v83 -> ?v84)
+   Uses your theme variables (--surface, --btn-bg, --border, --green ...), so the
+   panel follows Dark / Light automatically. Logical properties only: RTL needs no
+   overrides. No transitions or animations (matches the site-wide rule above).
+   The only dynamic values are --grad-css and --gs-r, set from JS via CSSOM.
+   ========================================================================== */
+
+/* nav label: full text on desktop, short text in the phone tab bar */
+.gs-nav-short { display: none; }
+@media (max-width: 650px) {
+    .gs-nav-full { display: none; }
+    .gs-nav-short { display: inline; }
+}
+
+html.gs-lock { overflow: hidden; }
+
+.gs-dialog {
+    --gs-bg: var(--surface);
+    --gs-surface: var(--btn-bg);
+    --gs-line: var(--border);
+    --gs-text: var(--text);
+    --gs-muted: var(--text-soft);
+    --gs-accent: var(--green);
+    --gs-accent-ink: var(--on-accent);
+    --gs-danger: var(--error);
+    --gs-r: 0.5625;               /* preview aspect ratio, set by JS */
+    --gs-stage-h: 46vh;
+
+    padding: 0;
+    border: 1px solid var(--gs-line);
+    border-radius: 20px;
+    background: var(--gs-bg);
+    color: var(--gs-text);
+    font: inherit;
+    inline-size: min(960px, calc(100vw - 24px));
+    max-block-size: min(92vh, 860px);
+    overflow: hidden;
+}
+.gs-dialog::backdrop { background: rgba(4, 12, 8, 0.68); }
+
+.gs-shell {
+    display: flex;
+    flex-direction: column;
+    max-block-size: min(92vh, 860px);
+}
+
+.gs-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-block-end: 1px solid var(--gs-line);
+}
+.gs-head h2 { font-size: 1.1rem; font-weight: 700; color: var(--heading); }
+
+.gs-close {
+    display: grid;
+    place-items: center;
+    inline-size: 36px;
+    block-size: 36px;
+    border: 1px solid var(--gs-line);
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.gs-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 22px;
+    padding: 20px;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+/* live preview: a plain CSS gradient, shaped like the wallpaper that will be exported */
+.gs-stage {
+    align-self: start;
+    position: sticky;
+    inset-block-start: 0;
+    display: grid;
+    place-items: center;
+    z-index: 1;
+    background: var(--gs-bg);
+}
+.gs-preview {
+    aspect-ratio: var(--gs-r);
+    inline-size: min(100%, calc(var(--gs-stage-h) * var(--gs-r)));
+    border-radius: 16px;
+    /*noinspection CssUnresolvedCustomProperty*/
+    background: var(--grad-css, linear-gradient(160deg, #0b3d2e, #1f8a5b, #a8e6a1));
+    box-shadow: 0 0 0 1px var(--gs-line), 0 18px 40px rgba(0, 0, 0, 0.3);
+}
+
+.gs-panel { display: grid; gap: 18px; align-content: start; min-inline-size: 0; }
+.gs-sec { display: grid; gap: 10px; min-inline-size: 0; border: 0; }
+.gs-label { font-size: 0.9rem; font-weight: 600; color: var(--gs-muted); }
+
+/* presets */
+.gs-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.gs-preset {
+    display: grid;
+    gap: 6px;
+    padding: 6px;
+    border: 1px solid var(--gs-line);
+    border-radius: 12px;
+    background: var(--gs-surface);
+    color: inherit;
+    font-size: 0.78rem;
+    text-align: start;
+    cursor: pointer;
+}
+.gs-preset-sw { block-size: 44px; border-radius: 8px; /*noinspection CssUnresolvedCustomProperty*/
+    background: var(--grad-css); }
+.gs-preset[aria-pressed="true"] {
+    border-color: var(--gs-accent);
+    box-shadow: 0 0 0 1px var(--gs-accent);
+}
+
+/* colors */
+.gs-colors { display: flex; flex-wrap: wrap; gap: 10px; }
+.gs-color {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    padding-inline-end: 12px;
+    border: 1px solid var(--gs-line);
+    border-radius: 12px;
+    background: var(--gs-surface);
+    cursor: pointer;
+}
+.gs-swatch {
+    appearance: none;
+    -webkit-appearance: none;
+    inline-size: 36px;
+    block-size: 36px;
+    padding: 0;
+    border: 0 !important;                 /* beats the global input[type] rules */
+    border-radius: 8px;
+    background: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+.gs-swatch::-webkit-color-swatch-wrapper { padding: 0; }
+.gs-swatch::-webkit-color-swatch { border: 0; border-radius: 8px; }
+.gs-swatch::-moz-color-swatch { border: 0; border-radius: 8px; }
+.gs-hex { font-size: 0.8rem; font-variant-numeric: tabular-nums; color: var(--gs-muted); }
+
+.gs-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.gs-check { display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer; }
+.gs-check input { accent-color: var(--gs-accent); inline-size: 18px; block-size: 18px; }
+
+/* angle */
+.gs-rowhead { display: flex; align-items: baseline; justify-content: space-between; }
+.gs-angle-val { font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+.gs-range { inline-size: 100%; accent-color: var(--gs-accent); }
+
+/* size / format pills (native radios, visually hidden) */
+.gs-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.gs-opt { position: relative; cursor: pointer; }
+.gs-sr {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    opacity: 0;
+}
+.gs-opt-box {
+    display: grid;
+    gap: 2px;
+    padding: 8px 12px;
+    border: 1px solid var(--gs-line);
+    border-radius: 12px;
+    background: var(--gs-surface);
+    font-size: 0.85rem;
+}
+.gs-dim { font-size: 0.74rem; color: var(--gs-muted); font-variant-numeric: tabular-nums; }
+.gs-opt input:checked + .gs-opt-box {
+    border-color: var(--gs-accent);
+    background: rgba(16, 185, 129, 0.14);
+}
+.gs-opt input:focus-visible + .gs-opt-box { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* buttons */
+.gs-btn {
+    padding: 9px 16px;
+    border: 1px solid var(--gs-line);
+    border-radius: 12px;
+    background: var(--gs-surface);
+    color: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.gs-btn-primary {
+    border-color: transparent;
+    background: var(--gs-accent);
+    color: var(--gs-accent-ink);
+    font-weight: 700;
+    padding-inline: 22px;
+}
+.gs-btn[disabled] { opacity: 0.6; cursor: progress; }
+
+.gs-close:focus-visible,
+.gs-preset:focus-visible,
+.gs-btn:focus-visible,
+.gs-swatch:focus-visible,
+.gs-range:focus-visible,
+.gs-check input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+@media (hover: hover) {
+    .gs-preset:hover,
+    .gs-color:hover,
+    .gs-opt:hover .gs-opt-box,
+    .gs-close:hover,
+    .gs-btn:hover:not(.gs-btn-primary):not([disabled]) { border-color: var(--border-hover); }
+    .gs-btn-primary:hover:not([disabled]) { background: var(--green-dark); }
+}
+
+/* footer */
+.gs-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-block-start: 1px solid var(--gs-line);
+    background: var(--gs-bg);
+}
+.gs-status { font-size: 0.85rem; color: var(--gs-muted); min-block-size: 1.2em; }
+.gs-status.is-error { color: var(--gs-danger); }
+
+/* phones: full-screen sheet, preview stays pinned while the controls scroll */
+@media (max-width: 720px) {
+    .gs-dialog {
+        inline-size: 100vw;
+        max-inline-size: 100vw;
+        block-size: 100vh;
+        block-size: 100dvh;
+        max-block-size: 100dvh;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        --gs-stage-h: 28vh;
+    }
+    .gs-shell { block-size: 100%; max-block-size: none; }
+    .gs-head { padding-top: calc(14px + env(safe-area-inset-top, 0px)); }
+    .gs-body { grid-template-columns: 1fr; gap: 16px; padding: 12px 16px 20px; }
+    .gs-stage { padding-block-end: 8px; }
+    .gs-foot { padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+}
+
+
+/* ==========================================================================
+   DOMINANT COLOR FILTER (swatches next to / below the Quick Filter Pills)
+   Theme variables + logical properties only: Dark/Light and EN/AR need no overrides.
+   No transitions or animations (site-wide rule). Fill colors are set here via
+   attribute selectors, so the HTML needs no style="" attributes.
+   ========================================================================== */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    margin-block-end: clamp(20px, 3vw, 28px);   /* moved here from .category-pills */
+}
+.filter-bar .category-pills {
+    flex: 1 1 420px;                            /* wraps ABOVE the swatches when the row is too narrow */
+    min-width: 0;
+    margin-block-end: 0;
+}
+
+.color-filter {
+    flex: 0 0 auto;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    max-inline-size: 100%;
+    padding: 7px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+}
+
+.color-swatch {
+    --sw: var(--btn-bg);
+    --sw-ink: var(--on-accent);                 /* checkmark color: dark on every light/mid swatch */
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: 26px;
+    block-size: 26px;
+    padding: 0;
+    background: var(--sw);
+    color: var(--sw-ink);
+    border: 1px solid var(--border-hover);      /* keeps the black / white swatches visible in both themes */
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.color-swatch::before {                         /* bigger tap area, no bigger look */
+    content: "";
+    position: absolute;
+    inset: -5px;
+}
+.color-swatch[data-color=""]        { --sw: conic-gradient(#ef4444, #f97316, #eab308, #10b981, #3b82f6, #8b5cf6, #ef4444); }
+.color-swatch[data-color="green"]   { --sw: var(--green); }
+.color-swatch[data-color="black"]   { --sw: #141414; --sw-ink: #ffffff; }
+.color-swatch[data-color="white"]   { --sw: #f5f5f5; }
+.color-swatch[data-color="blue"]    { --sw: #3b82f6; }
+.color-swatch[data-color="orange"]  { --sw: #f97316; }
+.color-swatch[data-color="purple"]  { --sw: #8b5cf6; }
+.color-swatch[data-color="neutral"] { --sw: linear-gradient(135deg, #a1856a 50%, #b9b5ab 50%); }
+
+.swatch-check {
+    display: none;
+    inline-size: 14px;
+    block-size: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+/* Active = ring (gap in --surface, then --focus: 3:1+ on both themes) AND a checkmark, so it never relies on color alone */
+.color-swatch[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--focus);
+}
+.color-swatch[aria-pressed="true"] .swatch-check { display: block; }
+.color-swatch:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; }
+@media (hover: hover) {
+    .color-swatch:hover:not([aria-pressed="true"]) {
+        box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--border-hover);
+    }
+}
+
+.color-empty {
+    padding: clamp(24px, 5vw, 48px) 16px;
+    text-align: center;
+    color: var(--text-soft);
+    font-size: 0.95rem;
+}
+.grid-layout:not(:has(.card)) ~ .color-empty { display: none; }   /* never shown while a loading / "no results" message is in the grid */
+
+@media (max-width: 650px) {
+    .color-filter { flex: 1 1 100%; justify-content: space-between; padding-inline: 16px; }
+}
+
+
+/* ==========================================================================
+   FOOTER LINKS + SUPPORT BUTTON + ABOUT / PRIVACY DIALOGS
+   Theme variables + logical properties only: Dark/Light and EN/AR need no overrides.
+   No transitions or animations (site-wide rule).
+   ========================================================================== */
+.footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 22px;
+    margin-block-end: 14px;
+}
+.footer-link {
+    min-block-size: 44px;
+    padding: 0 4px;
+    background: none;
+    border: 0;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: underline;
+    text-decoration-color: var(--border-hover);
+    text-underline-offset: 5px;
+    cursor: pointer;
+}
+.footer-support {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-block-size: 42px;
+    padding-inline: 18px;
+    background: var(--green);
+    color: var(--on-accent);
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.footer-support .icon { inline-size: 18px; block-size: 18px; }
+@media (hover: hover) {
+    .footer-link:hover { color: var(--focus); text-decoration-color: currentColor; }
+    .footer-support:hover { background: var(--green-dark); }
+}
+
+html.info-lock { overflow: hidden; }
+
+.info-dialog {
+    margin: auto;                       /* the global * reset removes the browser's default centring */
+    padding: 0;
+    inline-size: min(620px, calc(100vw - 24px));
+    max-block-size: min(88vh, 760px);
+    max-block-size: min(88dvh, 760px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    overflow: hidden;
+    box-shadow: var(--shadow-pop);
+}
+.info-dialog::backdrop { background: rgba(4, 12, 8, 0.68); }
+
+.info-shell {
+    display: flex;
+    flex-direction: column;
+    max-block-size: min(88vh, 760px);
+    max-block-size: min(88dvh, 760px);
+}
+.info-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-block-end: 1px solid var(--border);
+}
+.info-head h2 { font-size: 1.1rem; font-weight: 700; color: var(--heading); }
+
+.info-close {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    inline-size: 36px;
+    block-size: 36px;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+}
+.info-close .icon { inline-size: 18px; block-size: 18px; }
+
+.info-body {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding: 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+}
+.info-body h3 {
+    margin-block-start: 6px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--heading);
+}
+.info-lead { font-size: 1.02rem; color: var(--heading); }
+.info-meta { font-size: 0.8rem; color: var(--text-soft); }
+.info-list {
+    display: grid;
+    gap: 6px;
+    padding-inline-start: 1.25em;
+    list-style: disc;
+}
+.info-list li::marker { color: var(--green); }
+
+.info-foot {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+    border-block-start: 1px solid var(--border);
+}
+.info-btn {
+    min-block-size: 44px;
+    padding-inline: 24px;
+    background: var(--green);
+    color: var(--on-accent);
+    border: 0;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+}
+.info-close:focus-visible,
+.info-btn:focus-visible,
+.footer-link:focus-visible,
+.footer-support:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (hover: hover) {
+    .info-close:hover { border-color: var(--border-hover); }
+    .info-btn:hover { background: var(--green-dark); }
+}

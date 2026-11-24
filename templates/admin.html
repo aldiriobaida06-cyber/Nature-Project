@@ -47,18 +47,18 @@ const tokenInput = $('#token');
 const statusEl = $('#status');
 
 try { tokenInput.value = sessionStorage.getItem('gwAdminToken') || ''; } catch { /* ignore */ }
-
 function setStatus(text, isError = false) {
     statusEl.textContent = text;
     statusEl.className = isError ? 'error' : '';
 }
 
 async function api(path, options = {}) {
-    const res = await fetch(path, {
-        ...options,
-        headers: { 'X-Admin-Token': tokenInput.value.trim() }
-    });
+    const res = await fetch(path, { ...options, headers: { 'X-Admin-Token': tokenInput.value.trim() } });
     if (!res.ok) {
+        if (res.status === 401) {
+            try { sessionStorage.removeItem('gwAdminToken'); } catch {}
+            tokenInput.value = '';
+        }
         const err = await res.json().catch(() => ({}));
         throw new Error(typeof err.detail === 'string' ? err.detail : `Error ${res.status}`);
     }
@@ -70,7 +70,10 @@ function button(label, cls, handler) {
     b.type = 'button';
     b.textContent = label;
     if (cls) b.className = cls;
-    b.addEventListener('click', handler);
+    b.addEventListener('click', async () => {
+        b.disabled = true;                     // stops double-click Delete
+        try { await handler(); } finally { b.disabled = false; }
+    });
     return b;
 }
 
@@ -111,9 +114,17 @@ function renderUploads(list) {
         meta.append(title, badge, desc, full);
 
         item.append(img, meta);
-        if (!w.approved) item.append(button('Approve', '', () => act(() => api(`/api/admin/wallpapers/${w.id}/approve`, { method: 'POST' }))));
+
+        if (!w.approved) {
+            item.append(button('Approve', '', () => {
+                return act(() => api(`/api/admin/wallpapers/${w.id}/approve`, {method: 'POST'}));
+            }));
+        }
+
         item.append(button('Delete', 'danger', () => {
-            if (confirm('Delete this wallpaper permanently?')) act(() => api(`/api/admin/wallpapers/${w.id}`, { method: 'DELETE' }));
+            if (confirm('Delete this wallpaper permanently?')) {
+                return act(() => api(`/api/admin/wallpapers/${w.id}`, {method: 'DELETE'}));
+            }
         }));
         box.appendChild(item);
     });
@@ -161,3 +172,4 @@ if (tokenInput.value) loadAll();
 </script>
 </body>
 </html>
+<link rel="icon"  type="image/png" href="/static/icons/icon-192.png">
