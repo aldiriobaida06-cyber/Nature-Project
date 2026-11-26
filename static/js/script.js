@@ -168,12 +168,15 @@ const TRANSLATIONS = {
         privacy_h1: 'What stays on your device',
         privacy_p1: 'To work properly, the site uses your browser’s local storage and cache for your favorites, your theme, language and orientation choices, a short-lived color cache, and the offline files that make the app load fast. This data never leaves your device, and you can clear it at any time in your browser settings.',
         privacy_h2: 'What you choose to send',
-        privacy_p2: 'If you send a message through the contact form or upload a wallpaper, we receive what you submit (your name, message, image, title and description). We use it only to reply to you or to review the upload, and approved uploads are published on the site.',
+        privacy_p2: 'If you send a message through the contact form, we receive your name and your message. They are stored in a database hosted by Supabase (PostgreSQL) solely to respond to your inquiry, and are never shared with third parties for marketing.',
+        privacy_p2b: 'If you upload a wallpaper, the image file and its details (title, description and dimensions) are stored with Supabase (Storage and Database). Approved uploads are published after review, so anyone can see them.',
         privacy_h3: 'Technical data and third parties',
         privacy_p3a: 'Wallpapers are loaded from Unsplash. As with any image hosted elsewhere, Unsplash can see basic technical details such as your IP address when your browser requests a photo. Downloads are counted with Unsplash as its guidelines require, without sharing personal information about you. The site’s fonts are hosted on our own server.',
+        privacy_p3c: 'Supabase hosts our database and file storage and acts as our data processor: it handles data only on our behalf and instructions. Uploaded wallpapers load directly from Supabase Storage, so, as with Unsplash, Supabase can see basic technical details such as your IP address when your browser requests them.',
         privacy_p3b: 'Like most websites, our server may briefly process technical request data, such as your IP address, to deliver pages and prevent abuse. We don’t use it to track you or build a profile.',
-        privacy_h4: 'Your choices and contact',
-        privacy_p4: 'Clear this site’s data in your browser at any time to erase everything stored locally. For any privacy question, use the Contact Us form on this page.'
+        privacy_h4: 'Your rights and contact',
+        privacy_p4: 'Clear this site’s data in your browser at any time to erase everything stored locally. For any privacy question, use the Contact Us form on this page.',
+        privacy_p4b: 'You can ask us at any time to delete your submitted messages or uploaded wallpapers, using the contact email in the Impressum (linked in the footer). You also have the right to access and correct your data and to lodge a complaint with a data protection authority.'
 
     },
     ar: {
@@ -326,12 +329,15 @@ const TRANSLATIONS = {
         privacy_h1: 'ما يبقى على جهازك',
         privacy_p1: 'لكي يعمل الموقع بشكل سليم، يستخدم التخزين المحلي وذاكرة التخزين المؤقت في متصفحك لحفظ مفضلتك، واختياراتك للمظهر واللغة والاتجاه، وذاكرة ألوان قصيرة الأمد، وملفات العمل دون اتصال التي تجعل التطبيق يفتح بسرعة. لا تغادر هذه البيانات جهازك أبدًا، ويمكنك مسحها في أي وقت من إعدادات المتصفح.',
         privacy_h2: 'ما ترسله بإرادتك',
-        privacy_p2: 'إذا أرسلت رسالة عبر نموذج التواصل أو رفعت خلفية، فإننا نستلم ما تدخله (الاسم والرسالة والصورة والعنوان والوصف). نستخدمه فقط للرد عليك أو لمراجعة الصورة المرفوعة، وتُنشر الصور المعتمدة على الموقع.',
+        privacy_p2: 'إذا أرسلت رسالة عبر نموذج التواصل، فإننا نستلم اسمك ورسالتك. تُخزَّن في قاعدة بيانات مستضافة لدى \u2066Supabase\u2069 (\u2066PostgreSQL\u2069) للرد على استفسارك فقط، ولا تُشارك مع أي جهة خارجية لأغراض تسويقية.',
+        privacy_p2b: 'إذا رفعت خلفية، فإن ملف الصورة وبياناتها (العنوان والوصف والأبعاد) تُخزَّن لدى \u2066Supabase\u2069 (التخزين وقاعدة البيانات). تُنشر الصور المعتمدة بعد المراجعة، ويمكن لأي زائر رؤيتها.',
         privacy_h3: 'البيانات التقنية والجهات الخارجية',
         privacy_p3a: 'تُحمَّل الخلفيات من \u2066Unsplash\u2069، وكما هو الحال مع أي صورة مستضافة لدى جهة أخرى، قد ترى هذه الجهة بيانات تقنية أساسية مثل عنوان \u2066IP\u2069 عندما يطلب متصفحك الصورة. ويُحتسب عدد التنزيلات لدى \u2066Unsplash\u2069 وفق إرشاداتها دون مشاركة أي معلومات شخصية عنك. وخطوط الموقع مستضافة على خادمنا نفسه.',
+        privacy_p3c: 'تستضيف \u2066Supabase\u2069 قاعدة بياناتنا وملفاتنا وتعمل بصفتها معالِجًا للبيانات نيابةً عنا ووفق تعليماتنا فقط. وتُحمَّل الخلفيات المرفوعة مباشرة من \u2066Supabase Storage\u2069، لذلك قد ترى \u2066Supabase\u2069 عنوان \u2066IP\u2069 الخاص بك عندما يطلبها متصفحك، كما هو الحال مع \u2066Unsplash\u2069.',
         privacy_p3b: 'وكما تفعل معظم المواقع، قد يعالج خادمنا بيانات الطلبات التقنية مثل عنوان \u2066IP\u2069 لفترة وجيزة لتقديم الصفحات ومنع إساءة الاستخدام. ولا نستخدمها لتتبعك أو لبناء ملف عنك.',
-        privacy_h4: 'خياراتك والتواصل',
-        privacy_p4: 'يمكنك مسح بيانات هذا الموقع من متصفحك في أي وقت لحذف كل ما خُزّن محليًا. ولأي سؤال عن الخصوصية، استخدم نموذج «اتصل بنا» في هذه الصفحة.'
+        privacy_h4: 'حقوقك والتواصل',
+        privacy_p4: 'يمكنك مسح بيانات هذا الموقع من متصفحك في أي وقت لحذف كل ما خُزّن محليًا. ولأي سؤال عن الخصوصية، استخدم نموذج «اتصل بنا» في هذه الصفحة.',
+        privacy_p4b: 'يمكنك في أي وقت طلب حذف رسائلك المرسلة أو خلفياتك المرفوعة عبر البريد الإلكتروني المذكور في صفحة \u2066Impressum\u2069 (الرابط في التذييل). ولك أيضًا الحق في الاطلاع على بياناتك وتصحيحها وتقديم شكوى إلى جهة حماية البيانات المختصة.'
     }
 };
 

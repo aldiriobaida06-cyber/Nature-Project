@@ -322,12 +322,15 @@
             <h3 data-i18n="privacy_h1">What stays on your device</h3>
             <p data-i18n="privacy_p1">To work properly, the site uses your browser’s local storage and cache for your favorites, your theme, language and orientation choices, a short-lived color cache, and the offline files that make the app load fast. This data never leaves your device, and you can clear it at any time in your browser settings.</p>
             <h3 data-i18n="privacy_h2">What you choose to send</h3>
-            <p data-i18n="privacy_p2">If you send a message through the contact form or upload a wallpaper, we receive what you submit (your name, message, image, title and description). We use it only to reply to you or to review the upload, and approved uploads are published on the site.</p>
+            <p data-i18n="privacy_p2">If you send a message through the contact form, we receive your name and your message. They are stored in a database hosted by Supabase (PostgreSQL) solely to respond to your inquiry, and are never shared with third parties for marketing.</p>
+            <p data-i18n="privacy_p2b">If you upload a wallpaper, the image file and its details (title, description and dimensions) are stored with Supabase (Storage and Database). Approved uploads are published after review, so anyone can see them.</p>
             <h3 data-i18n="privacy_h3">Technical data and third parties</h3>
             <p data-i18n="privacy_p3a">Wallpapers are loaded from Unsplash. As with any image hosted elsewhere, Unsplash can see basic technical details such as your IP address when your browser requests a photo. Downloads are counted with Unsplash as its guidelines require, without sharing personal information about you. The site’s fonts are hosted on our own server.</p>
+            <p data-i18n="privacy_p3c">Supabase hosts our database and file storage and acts as our data processor: it handles data only on our behalf and instructions. Uploaded wallpapers load directly from Supabase Storage, so, as with Unsplash, Supabase can see basic technical details such as your IP address when your browser requests them.</p>
             <p data-i18n="privacy_p3b">Like most websites, our server may briefly process technical request data, such as your IP address, to deliver pages and prevent abuse. We don’t use it to track you or build a profile.</p>
-            <h3 data-i18n="privacy_h4">Your choices and contact</h3>
+            <h3 data-i18n="privacy_h4">Your rights and contact</h3>
             <p data-i18n="privacy_p4">Clear this site’s data in your browser at any time to erase everything stored locally. For any privacy question, use the Contact Us form on this page.</p>
+            <p data-i18n="privacy_p4b">You can ask us at any time to delete your submitted messages or uploaded wallpapers, using the contact email in the Impressum (linked in the footer). You also have the right to access and correct your data and to lodge a complaint with a data protection authority.</p>
         </div>
         <div class="info-foot">
             <button type="button" class="info-btn" data-info-close data-i18n="info_close">Close</button>
@@ -424,7 +427,7 @@
 <button id="backToTop" class="back-to-top" title="Go to top" aria-label="Go to top" type="button" data-i18n-attr="title:back_top;aria-label:back_top">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
-<script src="/static/js/script.js?v11" defer></script>
+<script src="/static/js/script.js?v12" defer></script>
 <script src="/static/js/blur-tool.js?v1" defer></script>
 <script src="/static/js/smart-preload.js?v1" defer></script>
 <script src="/static/js/gradient-studio.js?v1" defer></script>
