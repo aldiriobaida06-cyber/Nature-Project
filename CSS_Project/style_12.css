@@ -1,0 +1,50 @@
+.pricing-container {
+    display: flex;
+    align-items: center;
+    justify-content:center ;
+    gap: 20px;
+    padding: 40px;
+    font-family: sans-serif;
+}
+.price-card {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 320px;
+    padding: 25px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    background-color: white;
+}
+.price-card.popular {
+    height: 360px;
+    border-color: #6c5ce7;
+    box-shadow: 0 10px 20px rgb(0,0,0,0.1);
+}
+.badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #6c5ce7;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+.price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 15px 0;
+}
+.btn {
+    margin-top: auto;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}

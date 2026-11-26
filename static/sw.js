@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v4.7.0';                 // bump on EVERY deploy that touches shell files
+const VERSION = 'v4.8.0';                 // bump on EVERY deploy that touches shell files
 const SHELL = `shell-${VERSION}`;
 const API = `api-${VERSION}`;
 const IMG = 'img-v1';
@@ -9,9 +9,9 @@ const LIMITS = { [IMG]: 150, [API]: 40 };  // max entries, oldest evicted first
 // Must match the URLs in your HTML exactly, including ?v= (the cache matches full URLs).
 const SHELL_ASSETS = [
   '/',
-  '/style_23.css?v87',
+  '/style_23.css?v88',
   '/theme-init.js?v3',
-  '/static/js/script.js?v10',
+  '/static/js/script.js?v11',
   '/static/js/blur-tool.js?v1',
   '/static/js/smart-preload.js?v1',
   '/static/fonts/plus-jakarta-sans-latin-wght-normal.woff2',

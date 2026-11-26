@@ -1,0 +1,53 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #444444;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgb(0,0,0,0.1);
+    max-width: 400px;
+    text-align: center;
+}
+
+h1 {
+    font: bold 28px sans-serif;
+    color: #111111;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgb(0,0,0,0.1);
+    margin-bottom: 5px;
+}
+
+h2 {
+    font: italic 300 16px sans-serif;
+    color: #0077ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+p {
+    font: 15px/1.6 sans-serif;
+    text-align: justify;
+    word-spacing: 1px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #0077ff;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: capitalize;
+    border-radius: 6px;
+}

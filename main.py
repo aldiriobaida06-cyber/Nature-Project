@@ -532,6 +532,12 @@ def init_db() -> None:
 def check_supabase() -> None:
     """Startup sanity check. Never raises: a missing table / bucket is reported loudly in the log instead, so the
     site still starts and the problem is easy to find (run supabase_setup.sql in the Supabase SQL Editor)."""
+
+    try:
+        supabase_client.table(SUPABASE_MESSAGES_TABLE).select("id").limit(1).execute()
+    except Exception as exc:
+        logger.error("Supabase table '%s' is not reachable (%s: %s). Did you run supabase_setup.sql?",
+                     SUPABASE_MESSAGES_TABLE, type(exc).__name__, exc)
     try:
         supabase_client.table(SUPABASE_TABLE).select("id").limit(1).execute()
     except Exception as exc:
@@ -980,7 +986,27 @@ def sb_pick_upload_for_day(day: str) -> Optional[dict]:
     )
     return picked[0] if picked else None
 
+def sb_insert_message(name: str, message: str) -> None:
+    supabase_client.table(SUPABASE_MESSAGES_TABLE).insert({"name": name, "message": message}).execute()
 
+
+def sb_list_messages() -> list:
+    """Newest first. Keys are mapped to the old names (username/text) so admin.html needs no change."""
+    result = (
+        supabase_client.table(SUPABASE_MESSAGES_TABLE)
+        .select("id, name, message, created_at")
+        .order("id", desc=True)
+        .limit(500)
+        .execute()
+    )
+    return [
+        {"id": r["id"], "username": r["name"], "text": r["message"], "created_at": r.get("created_at")}
+        for r in (result.data or [])
+    ]
+
+
+def sb_delete_message(message_id: int) -> None:
+    supabase_client.table(SUPABASE_MESSAGES_TABLE).delete().eq("id", message_id).execute()
 # ---------------------------------------------------------------- Unsplash proxy
 
 # Photo-level filter: only clearly off-topic subjects, checked against description + alt text ONLY (not tags).
@@ -1455,14 +1481,20 @@ app.mount("/static", CachedStaticFiles(directory=STATIC_DIR, long_lived_prefixes
 # ---- visitor endpoints
 
 @app.post("/api/send-message", dependencies=[Depends(message_limit)])
-def receive_message(data: UserMessage):  # plain `def`: FastAPI runs it in a worker thread
+def receive_message(data: UserMessage, request: Request):  # plain `def`: FastAPI runs it in a worker thread
     username, text = data.username.strip(), data.text.strip()
     if not username or not text:
         raise HTTPException(status_code=400, detail="Name and message must not be empty.")
-    with db() as conn:
-        conn.execute("INSERT INTO messages (username, text) VALUES (?, ?)", (username, text))
+    if USE_SUPABASE:
+        try:
+            sb_insert_message(username, text)
+        except Exception:
+            logger.exception("Could not store a contact message in Supabase (ip=%s)", get_client_ip(request))
+            raise HTTPException(status_code=500, detail="Your message could not be saved. Please try again later.")
+    else:                                   # local fallback mode only
+        with db() as conn:
+            conn.execute("INSERT INTO messages (username, text) VALUES (?, ?)", (username, text))
     return {"success": "success", "message": "The data has been successfully saved to the database!"}
-
 
 def _stream_size(stream) -> int:
     """Exact size of a seekable upload without reading it into memory."""
@@ -1720,6 +1752,8 @@ async def track_download(photo_id: str, request: Request):
 
 @app.get("/api/get-messages", dependencies=ADMIN)
 def get_messages():
+    if USE_SUPABASE:
+        return sb_list_messages()
     with db() as conn:
         rows = conn.execute("SELECT id, username, text FROM messages ORDER BY id DESC LIMIT 500").fetchall()
     return [dict(r) for r in rows]
@@ -1727,10 +1761,12 @@ def get_messages():
 
 @app.delete("/api/messages/{message_id}", dependencies=ADMIN)
 def delete_message(message_id: int):
-    with db() as conn:
-        conn.execute("DELETE FROM messages WHERE id = ?", (message_id,))
+    if USE_SUPABASE:
+        sb_delete_message(message_id)
+    else:
+        with db() as conn:
+            conn.execute("DELETE FROM messages WHERE id = ?", (message_id,))
     return {"ok": True}
-
 
 @app.get("/api/admin/wallpapers", dependencies=ADMIN)
 def admin_list_wallpapers():
@@ -1903,3 +1939,11 @@ def _cli(argv=None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(_cli())
+
+
+SUPABASE_MESSAGES_TABLE = "messages"     # contact-form messages
+
+
+
+
+

@@ -15,7 +15,7 @@
     <!-- Self-hosted font (no connection to Google). The file must exist in static/fonts/ -->
     <link rel="preload" href="/static/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 
-    <link rel="stylesheet" href="/style_23.css?v87">
+    <link rel="stylesheet" href="/style_23.css?v88">
     <link rel="icon" href="data:,">
 </head>
 <body>
@@ -271,6 +271,7 @@
     <nav class="footer-nav" aria-label="Footer" data-i18n-attr="aria-label:footer_nav_aria">
         <button type="button" class="footer-link" data-info-open="about" aria-haspopup="dialog" data-i18n="footer_about">About</button>
         <button type="button" class="footer-link" data-info-open="privacy" aria-haspopup="dialog" data-i18n="footer_privacy">Privacy Policy</button>
+        <button type="button" class="footer-link" data-info-open="impressum" aria-haspopup="dialog" data-i18n="footer_impressum">Impressum</button>
         <a class="footer-support" href="https://ko-fi.com/greenwingswallpapers" target="_blank" rel="noopener noreferrer"
            aria-label="Buy me a coffee on Ko-fi (opens in a new tab)" data-i18n-attr="aria-label:support_aria">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
@@ -334,6 +335,58 @@
     </div>
 </dialog>
 
+
+<dialog class="info-dialog" id="impressumDialog" aria-labelledby="impressumTitle">
+    <div class="info-shell">
+        <div class="info-head">
+            <h2 id="impressumTitle" data-i18n="impressum_title">Impressum (Legal Notice)</h2>
+            <button type="button" class="info-close" data-info-close aria-label="Close" data-i18n-attr="aria-label:info_close">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+        <div class="info-body">
+            <p class="info-meta" data-i18n="impressum_note">Shown in German and English, as required for German websites (§ 5 DDG).</p>
+
+            <!-- The legal text is German/English, so it stays left-to-right even when the site is in Arabic (RTL).
+                 REPLACE every [placeholder] below with your real details before going live. -->
+            <div dir="ltr">
+                <h3>Angaben gemäß § 5 DDG / Information pursuant to § 5 DDG</h3>
+                <p>
+                    [Full Name]<br>
+                    [Street Address]<br>
+                    [Postal Code &amp; City, Germany]
+                </p>
+
+                <h3>Kontakt / Contact</h3>
+                <p>
+                    Telefon / Phone: [Phone Number]<br>
+                    E-Mail: [Email Address]
+                </p>
+
+                <!-- Only if you have a VAT ID (USt-IdNr.). Delete this block if you don't (e.g. Kleinunternehmer):
+                <h3>Umsatzsteuer-ID / VAT ID</h3>
+                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: [VAT ID]</p>
+                -->
+
+                <h3>Haftung für Inhalte / Liability for content</h3>
+                <p lang="de">Wir erstellen die Inhalte dieser Website mit größtmöglicher Sorgfalt, übernehmen jedoch keine Gewähr für Richtigkeit, Vollständigkeit und Aktualität. Als Diensteanbieter sind wir nach § 7 Abs. 1 DDG für eigene Inhalte nach den allgemeinen Gesetzen verantwortlich. Nach den §§ 8 bis 10 DDG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen (z. B. von Besuchern hochgeladene Wallpaper) zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Bei Bekanntwerden entsprechender Rechtsverletzungen entfernen wir die betroffenen Inhalte umgehend.</p>
+                <p lang="en">We create the content of this website with the greatest possible care but cannot guarantee that it is accurate, complete or up to date. As a service provider we are responsible for our own content under the general laws (§ 7 (1) DDG). Under §§ 8 to 10 DDG we are not obliged to monitor transmitted or stored third-party information (for example wallpapers uploaded by visitors) or to investigate circumstances indicating illegal activity. If we become aware of a legal violation, we will remove the content concerned without delay.</p>
+
+                <h3>Haftung für Links / Liability for links</h3>
+                <p lang="de">Diese Website enthält Links zu externen Websites Dritter (z. B. Unsplash, Ko-fi), auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte übernehmen wir keine Gewähr; verantwortlich ist stets der jeweilige Anbieter. Bei Bekanntwerden von Rechtsverletzungen entfernen wir solche Links umgehend.</p>
+                <p lang="en">This website contains links to external third-party websites (e.g. Unsplash, Ko-fi) whose content we cannot influence. We accept no liability for such content; the respective provider is always responsible. If we become aware of legal violations, we will remove the links concerned without delay.</p>
+
+                <h3>Urheberrecht und Bildnachweise / Copyright and image credits</h3>
+                <p lang="de">Die meisten Fotos stammen von Unsplash und werden den jeweiligen Fotografen zugeschrieben. Von Besuchern hochgeladene Bilder werden erst nach einer Prüfung veröffentlicht. Wenn Sie eine Urheberrechtsverletzung feststellen, kontaktieren Sie uns bitte; wir entfernen betroffene Inhalte umgehend.</p>
+                <p lang="en">Most photos come from Unsplash and are credited to their photographers. Images uploaded by visitors are only published after review. If you notice a copyright infringement, please contact us and we will remove the content concerned without delay.</p>
+            </div>
+        </div>
+        <div class="info-foot">
+            <button type="button" class="info-btn" data-info-close data-i18n="info_close">Close</button>
+        </div>
+    </div>
+</dialog>
+
 <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
     <button type="button" class="close-modal" aria-label="Close preview" data-i18n-attr="aria-label:close_preview">
         <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -371,7 +424,7 @@
 <button id="backToTop" class="back-to-top" title="Go to top" aria-label="Go to top" type="button" data-i18n-attr="title:back_top;aria-label:back_top">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
-<script src="/static/js/script.js?v10" defer></script>
+<script src="/static/js/script.js?v11" defer></script>
 <script src="/static/js/blur-tool.js?v1" defer></script>
 <script src="/static/js/smart-preload.js?v1" defer></script>
 <script src="/static/js/gradient-studio.js?v1" defer></script>

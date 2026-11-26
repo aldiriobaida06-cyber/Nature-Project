@@ -1,0 +1,14 @@
+body {
+    background-color: gray;
+}
+
+.card {
+    background-color: #ff7675;
+    color: white;
+    width: 300px;
+    padding: 30px;
+    margin: 50px auto;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

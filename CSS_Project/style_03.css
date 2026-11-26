@@ -1,0 +1,20 @@
+body {
+    text-align: center;
+    padding-top: 50px;
+}
+.badge {
+    background-color: #2ecc71;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+
+}
+
+
+

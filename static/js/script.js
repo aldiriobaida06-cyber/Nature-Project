@@ -26,6 +26,9 @@ const TRANSLATIONS = {
         lang_aria: 'Language',
         nav_aria: 'Main',
         menu: 'Menu',
+        footer_impressum: 'Impressum',
+        impressum_title: 'Impressum (Legal Notice)',
+        impressum_note: 'Shown in German and English, as required for German websites (§ 5 DDG).',
         detail_dimensions: 'Dimensions',
         detail_quality: 'Quality',
         nav_home: 'Home',
@@ -190,6 +193,9 @@ const TRANSLATIONS = {
         detail_dimensions: 'الأبعاد',
         detail_quality: 'الجودة',
         search_btn: 'بحث',
+        footer_impressum: 'Impressum',
+        impressum_title: 'البيانات القانونية (\u2066Impressum\u2069)',
+        impressum_note: 'يُعرض باللغتين الألمانية والإنجليزية وفق متطلبات القانون الألماني (\u2066§ 5 DDG\u2069).',
         theme_to_light: 'التبديل إلى الوضع الفاتح',
         theme_to_dark: 'التبديل إلى الوضع الداكن',
         upload: 'رفع',
@@ -2632,7 +2638,7 @@ document.addEventListener('visibilitychange', () => {
    The texts are static markup with data-i18n, so applyLanguage() translates them (and RTL flips) with no extra code.
    No innerHTML, no inline handlers. */
 
-const INFO_DIALOGS = { about: $('#aboutDialog'), privacy: $('#privacyDialog') };
+const INFO_DIALOGS = { about: $('#aboutDialog'), privacy: $('#privacyDialog'), impressum: $('#impressumDialog') };
 let infoOpener = null;                                   // the button to give focus back to on close
 
 function openInfo(name) {

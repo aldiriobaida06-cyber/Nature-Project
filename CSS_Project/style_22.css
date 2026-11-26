@@ -1,0 +1,59 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: sans-serif;
+    padding: 20px;
+    background-color: #fafafa;
+}
+.magazine {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 15px;
+    grid-template-areas:
+         "main sidebar"
+         "tech sidebar"
+         "sports video";
+}
+.featured {
+    grid-area: main;
+    background-color: #e74c3c;
+    color: white;
+    padding: 40px;
+    font-size: 24px;
+}
+.ads {
+    grid-area: sidebar;
+    background-color: #f1c40f;
+    padding: 20px;
+}
+.tech {
+    grid-area: tech;
+    background-color: #3498db;
+    color: white;
+    padding: 20px;
+}
+.sports {
+    grid-area: sports;
+    background-color: #2ecc71;
+    color: white;
+    padding: 20px;
+}
+.video {
+    grid-area: video;
+    background-color: #9b59b6;
+    color: white;
+    padding: 20px;
+}
+
+
+
+
+
+
+
+
+

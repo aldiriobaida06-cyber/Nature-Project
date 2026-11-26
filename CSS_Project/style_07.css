@@ -1,0 +1,42 @@
+body {
+    font-family: 'Georgia', serif;
+    color: #222222;
+    background-color: #fafafa;
+    margin: 0;
+    padding: 40px 20px;
+}
+
+.post {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+h1 {
+    font: bold 40px/1.2 sans-serif;
+    color: #1a1a1a;
+    text-transform: capitalize;
+    text-shadow: 2px 2px 3px rgb(0,0,0,0.5);
+    margin-bottom: 10px;
+}
+
+.meta {
+    font: italic 14px sans-serif;
+    color: #777777;
+    margin-bottom: 30px;
+}
+
+h2{
+    font: bold 24px sans-serif;
+    color: #b12704;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    border-left: 4px solid #b12704  ;
+    padding-left: 10px;
+}
+
+p {
+    font: 18px/1.8 serif;
+    text-align: justify;
+    margin-bottom: 20px;
+
+}

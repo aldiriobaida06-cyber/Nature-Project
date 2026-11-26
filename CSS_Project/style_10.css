@@ -1,0 +1,33 @@
+.product-container {
+    background: #fff;
+    border: 2px solid #333;
+    padding: 20px;
+    width: 350px;
+    margin: 50px auto;
+}
+
+.avatar {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background-color: #bbb;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.info {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+}
+
+.name {
+    margin: 0;
+}
+
+.status-online {
+    display: block;
+    color: green;
+    font-size: 12px;
+    font-weight: bold;
+}

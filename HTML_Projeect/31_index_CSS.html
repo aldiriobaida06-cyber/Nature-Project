@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency & Crypto Dashboard</title>
+    <link rel="stylesheet"  href="../CSS_Project/style_27.css">
+</head>
+<body>
+<div class="dashboard" id="dashboard">
+    <h1>Advanced Currency Dashboard </h1>
+    <div class="crypto--grid">
+        <div class="card">
+            <h3>Bitcoin (BTC)</h3>
+            <p id="btc-price">--$</p>
+        </div>
+        <div class="card">
+            <h3>Ethereum (ETH)</h3>
+            <p id="eth-price">--$</p>
+        </div>
+    </div>
+
+    <div class="converter-section">
+        <div class="input-group">
+            <input type="number" id="amount-input" value="100" min="1" placeholder="Enter amount">
+        </div>
+        <div class="input-group">
+            <select id="from-currency"></select>
+            <select id="to-currency"></select>
+        </div>
+        <button id="convert-btn">Calculate Exchange Rate</button>
+        <div class="result-box" id="conversion-result">---</div>
+    </div>
+
+    <div class="status-bar">
+        <span id="update-status">Updating dashboard data...</span>
+        <div class="spinner" id="global-spinner"></div>
+    </div>
+</div>
+<script src="../JS_Project/4_script.js"></script>
+</body>
+</html>
